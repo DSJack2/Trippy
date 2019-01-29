@@ -7,8 +7,11 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ImageBackground
 } from 'react-native';
 import { WebBrowser } from 'expo';
+import { Button, colors } from 'react-native-elements';
+import { Icon } from 'react-native-vector-icons/FontAwesome';
 
 import { MonoText } from '../components/StyledText';
 
@@ -20,8 +23,9 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
+        <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
+
+          {/* <View style={styles.welcomeContainer}>
             <Image
               source={
                 __DEV__
@@ -50,16 +54,16 @@ export default class HomeScreen extends React.Component {
             <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
               <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
             </TouchableOpacity>
-          </View>
-        </ScrollView>
+          </View> */}
+          <View>
+            <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('Map')}>
+            </Button>
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
+            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('Map')}>
+            </Button>
 
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
           </View>
-        </View>
+        </ImageBackground>
       </View>
     );
   }
@@ -101,7 +105,23 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignContent: 'center'
+  },
+  ImageBackgroundContainer:{
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center'
+  },
+  newTripButton: {
+    textAlign: 'center',
+    marginLeft: '25%',
+    width: 200
+  },
+  previousTripsButton: {
+    marginLeft: '25%',
+    width: 200,
+    marginTop: 10
   },
   developmentModeText: {
     marginBottom: 20,
