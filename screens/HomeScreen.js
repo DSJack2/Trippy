@@ -115,11 +115,11 @@ const styles = StyleSheet.create({
   },
   newTripButton: {
     textAlign: 'center',
-    marginLeft: '25%',
+    alignSelf: 'center',
     width: 200
   },
   previousTripsButton: {
-    marginLeft: '25%',
+    alignSelf: 'center',
     width: 200,
     marginTop: 10
   },
