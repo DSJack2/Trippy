@@ -1,6 +1,5 @@
 import React from 'react';
-//import { MapView } from 'expo';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { TextInput } from 'react-native-gesture-handler';
@@ -8,7 +7,10 @@ import { TextInput } from 'react-native-gesture-handler';
 export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' }
+    this.state = {
+                   startAddress: '',
+                   destinationAddress: ''
+                 }
   }
   static navigationOptions = {
     title: 'Map',
@@ -16,6 +18,10 @@ export default class MapScreen extends React.Component {
 
   render() {
     return (
+      <View style ={styles.container}>
+      <TextInput style={styles.textInputContainer} placeholder='Enter Start Address' onChangeText={(startAddress) => this.setState({ startAddress })}
+        value={this.state.startAddress}
+        editable={true} />
       <MapView
         style={{ flex: 1 }}
         provider="google"
@@ -26,17 +32,22 @@ export default class MapScreen extends React.Component {
           longitudeDelta: 0.0421,
         }}
       //showsUserLocation = "true"
-      >
-        <TextInput style={styles.textInputContainer} placeholder='Enter Start Address' onChangeText={(text) => this.setState({ text })} value={this.state.text} 
-          editable={true} />
-      </MapView>
+      />
+      <TextInput style={styles.textInputContainer} placeholder='Enter Destination Address' onChangeText={(destinationAddress) => this.setState({ destinationAddress })}
+          value={this.state.destinationAddress}
+          editable={true}/>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+  },
   textInputContainer:{
-    backgroundColor: '#fefefe',
+    flex:0,
+    backgroundColor: 'transparent',
     alignSelf: 'center',
     height: 40,
     width: 200,
