@@ -1,12 +1,16 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import MapScreen from '../screens/MapScreen'
+import MapScreen from '../screens/MapScreen';
+import LoginScreen from '../screens/UserAuth/LoginScreen';
+import SignupScreen from '../screens/UserAuth/SignupScreen';
+import ForgotPasswordScreen from '../screens/UserAuth/ForgotPasswordScreen';
+
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -55,24 +59,25 @@ SettingsStack.navigationOptions = {
   ),
 };
 
-const MapStack = createStackNavigator ({
+const MapStack = createStackNavigator({
   Map: MapScreen
 });
 
-MapStack.navigationOptions ={
+MapStack.navigationOptions = {
   tabBarLabel: 'Map',
-  tabBarIcon: ({focused}) => (
+  tabBarIcon: ({ focused }) => (
     <TabBarIcon
-    focused = {focused}
-    name = {Platform.OS == 'ios' ? 'ios-map' : 'md-map'}
+      focused={focused}
+      name={Platform.OS == 'ios' ? 'ios-map' : 'md-map'}
     />
   ),
 };
 
-
-export default createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
-  MapStack,
+  MapStack
 });
+
+export default createAppContainer(TabNavigator);
