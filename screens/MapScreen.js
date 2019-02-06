@@ -18,7 +18,7 @@ export default class MapScreen extends React.Component {
         const {navigation} = this.props;
         const origin = navigation.getParam('origin', 'Not a Valid Address');
         const destination = navigation.getParam('destination', 'Not a Valid Address');
-        Geocoder.init('AIzaSyCzi89qp2jzxu5jFYvaeQU6xfQjfr5JN1Y');
+        Geocoder.init(''); //need to load in api key
         Geocoder.from(JSON.stringify(origin))
             .then(json => {
                  startLat = json.results[0].geometry.location.lat;

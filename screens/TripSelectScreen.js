@@ -25,68 +25,21 @@ export default class TripSelectScreen extends React.Component {
                 <ImageBackground source={require('../assets/images/NewZ.jpg')} style={styles.ImageBackgroundContainer}>
                     <GooglePlacesAutocomplete
                         placeholder='Start Address'
-                        minLength={2} // minimum length of text to search
+                        minLength={2}
                         autoFocus={false}
-                        returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-                        listViewDisplayed='auto'    // true/false/undefined
+                        returnKeyType={'search'}
+                        listViewDisplayed='auto'
                         fetchDetails={true}
-                        renderDescription={row => row.description} // custom description render
-                        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                            console.log(data);
+                        renderDescription={row => row.description}
+                        onPress={(data, details = null) => {
+                            //console.log(data);
                             this.state.startAddress = data.description;
                         }}
 
                         getDefaultValue={() => ''}
 
                         query={{
-                            key: 'AIzaSyCzi89qp2jzxu5jFYvaeQU6xfQjfr5JN1Y',
-                            language: 'en', // language of the results
-                            types: ['address', 'establishment']
-                        }}
-
-                        styles={{
-                            textInputContainer: {
-                                width: '100%'
-                            },
-                            description: {
-                                fontWeight: 'bold',
-                                color: 'white'
-                            },
-                            predefinedPlacesDescription: {
-                                color: '#1faadb'
-                            }
-                        }}
-                        currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-                        currentLocationLabel="Current location"
-                        nearbyPlacesAPI='GoogleReverseGeocoding'
-                        GooglePlacesSearchQuery={{
-                            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                            // rankby: 'prominance',
-                            // types: 'food'
-                        }}
-                        debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-
-                    />
-
-                    <GooglePlacesAutocomplete
-                        placeholder='Destination Address'
-                        minLength={2} // minimum length of text to search
-                        autoFocus={false}
-                        returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-                        listViewDisplayed='auto'    // true/false/undefined
-                        fetchDetails={true}
-                        renderDescription={row => row.description} // custom description render
-                        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                            //console.log(data, details);
-                            this.state.destinationAddress = data.description;
-                            //console.log(this.state.destinationAddress);
-                        }}
-
-                        getDefaultValue={() => ''}
-
-                        query={{
-                            // available options: https://developers.google.com/places/web-service/autocomplete
-                            key: 'AIzaSyCzi89qp2jzxu5jFYvaeQU6xfQjfr5JN1Y',
+                            key: '',//need to load key
                             language: 'en', // language of the results
                             types: ['address', 'establishment']
                         }}
@@ -105,11 +58,56 @@ export default class TripSelectScreen extends React.Component {
                         }}
                         currentLocation={true}
                         currentLocationLabel="Current location"
-                        nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                        nearbyPlacesAPI='GoogleReverseGeocoding'
                         GooglePlacesSearchQuery={{
-                            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                            rankby: 'distance',
-                            types: 'food'
+                            // rankby: 'prominance',
+                            // types: 'food'
+                        }}
+                        debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+
+                    />
+
+                    <GooglePlacesAutocomplete
+                        placeholder='Destination Address'
+                        minLength={2}
+                        autoFocus={false}
+                        returnKeyType={'search'}
+                        listViewDisplayed='auto'
+                        fetchDetails={true}
+                        renderDescription={row => row.description}
+                        onPress={(data, details = null) => {
+                            //console.log(data, details);
+                            this.state.destinationAddress = data.description;
+                            //console.log(this.state.destinationAddress);
+                        }}
+
+                        getDefaultValue={() => ''}
+
+                        query={{
+                            key: '',//need to load in key
+                            language: 'en', // language of the results
+                            types: ['address', 'establishment']
+                        }}
+
+                        styles={{
+                            textInputContainer: {
+                                width: '100%'
+                            },
+                            description: {
+                                fontWeight: 'bold',
+                                color: 'white'
+                            },
+                            predefinedPlacesDescription: {
+                                color: '#1faadb'
+                            }
+                        }}
+                        currentLocation={true}
+                        currentLocationLabel="Current location"
+                        nearbyPlacesAPI='GooglePlacesSearch'
+                        GooglePlacesSearchQuery={{
+
+                            // rankby: 'distance',
+                            // types: 'food'
                         }}
                         debounce={200}
                     />
