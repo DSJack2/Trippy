@@ -7,10 +7,12 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MapScreen from '../screens/MapScreen'
+import TripSelectScreen from "../screens/TripSelectScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Map: MapScreen,
+  TripSelect: TripSelectScreen,
 });
 
 HomeStack.navigationOptions = {
@@ -69,10 +71,24 @@ MapStack.navigationOptions ={
   ),
 };
 
+const TripSelectStack = createStackNavigator ({
+   TripSelect: TripSelectScreen,
+})
+
+TripSelectStack.navigationOptions = {
+  tabBarLabel: 'TripSelect',
+  tabBarIcon: ({focused}) => (
+      <TabBarIcon
+          focused = {focused}
+          name = {Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+      />
+  ),
+};
 
 export default createBottomTabNavigator({
   HomeStack,
   //LinksStack,
   //SettingsStack,
   MapStack,
+  TripSelectStack,
 });

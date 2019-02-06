@@ -14,6 +14,7 @@ import { Button, colors } from 'react-native-elements';
 import { Icon } from 'react-native-vector-icons/FontAwesome';
 
 import { MonoText } from '../components/StyledText';
+import Geocoder from "react-native-geocoding";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -21,6 +22,7 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
+
     return (
       <View style={styles.container}>
         <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
@@ -56,10 +58,10 @@ export default class HomeScreen extends React.Component {
             </TouchableOpacity>
           </View> */}
           <View>
-            <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('Map')}>
+            <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('TripSelect')}>
             </Button>
 
-            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('Map')}>
+            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('TripSelect')}>
             </Button>
 
           </View>
