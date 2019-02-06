@@ -14,8 +14,6 @@ import { Button, colors } from 'react-native-elements';
 import { Icon } from 'react-native-vector-icons/FontAwesome';
 import * as firebase from 'firebase';
 
-import { MonoText } from '../components/StyledText';
-import Geocoder from "react-native-geocoding";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
