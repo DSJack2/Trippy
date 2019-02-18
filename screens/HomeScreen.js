@@ -30,7 +30,9 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
           <View>
+
             <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('TripSelect')}>
+
             </Button>
 
             <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('TripSelect')}>

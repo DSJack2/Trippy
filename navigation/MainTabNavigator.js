@@ -7,14 +7,13 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MapScreen from '../screens/MapScreen';
-import LoginScreen from '../screens/UserAuth/LoginScreen';
-import SignupScreen from '../screens/UserAuth/SignupScreen';
-import ForgotPasswordScreen from '../screens/UserAuth/ForgotPasswordScreen';
+import NewTripScreen from '../screens/NewTripScreen';
 
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Map: MapScreen,
+  NewTrip: NewTripScreen
 });
 
 HomeStack.navigationOptions = {
