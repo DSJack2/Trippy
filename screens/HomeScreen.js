@@ -14,7 +14,6 @@ import { Button, colors } from 'react-native-elements';
 import { Icon } from 'react-native-vector-icons/FontAwesome';
 import * as firebase from 'firebase';
 
-import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -26,14 +25,17 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+
     return (
       <View style={styles.container}>
         <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
           <View>
-            <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('NewTrip')}>
+
+            <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('TripSelect')}>
+
             </Button>
 
-            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('Map')}>
+            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('TripSelect')}>
             </Button>
 
             <Button title='Logout' onPress={this.onLogoutPress}/>
