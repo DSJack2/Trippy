@@ -1,13 +1,16 @@
 import React from 'react';
+<<<<<<< HEAD
 
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { Button } from 'react-native-elements';
 import { GAPIKEY } from "../constants/ApiKeys"
+=======
+import { ImageBackground, StyleSheet, View, Button } from 'react-native';
+>>>>>>> 38ccc00953b14b3f24dcaee40e6e0adf1610a7dd
 import { StackActions, NavigationActions } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import Geocoder from 'react-native-geocoding';
-import * as constants from '../constants/ApiKeys'
+import {GAPIKEY} from "../constants/ApiKeys"
 
 export default class TripSelectScreen extends React.Component {
     constructor(props) {
