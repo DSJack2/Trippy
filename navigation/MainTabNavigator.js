@@ -8,13 +8,17 @@ import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MapScreen from '../screens/MapScreen';
 import NewTripScreen from '../screens/NewTripScreen';
-import TripSelectScreen from '../screens/TripSelectScreen'
+import TripSelectScreen from '../screens/TripSelectScreen';
 
+const NewTripStack = createStackNavigator({
+  TripSelect: TripSelectScreen,
+  NewTrip: NewTripScreen
+})
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   Map: MapScreen,
-  NewTrip: NewTripScreen
+  New: NewTripStack
 });
 
 HomeStack.navigationOptions = {

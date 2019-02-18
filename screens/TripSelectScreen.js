@@ -1,10 +1,14 @@
 import React from 'react';
+
 import {ImageBackground, StyleSheet, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Button} from 'react-native-elements';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import * as constants from '../constants/ApiKeys';
-import {GAPIKEY} from "../constants/ApiKeys";
+import {GAPIKEY} from "../constants/ApiKeys"
+import { ImageBackground, StyleSheet, View } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import Geocoder from 'react-native-geocoding';
+import * as constants from '../constants/ApiKeys'
 
 export default class TripSelectScreen extends React.Component {
     constructor(props) {
@@ -17,6 +21,18 @@ export default class TripSelectScreen extends React.Component {
 
     static navigationOptions = {
         title: 'TripSelect',
+    }
+
+    onNextPress = () => {
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'NewTrip' })
+            ],
+
+        });
+
+        this.props.navigation.dispatch(navActions);
     }
 
     render() {
@@ -117,6 +133,7 @@ export default class TripSelectScreen extends React.Component {
                                 origin: this.state.startAddress,
                                 destination: this.state.destinationAddress
                             })}/>
+
                 </ImageBackground>
             </View>
         );
