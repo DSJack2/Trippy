@@ -38,7 +38,7 @@ export default class HomeScreen extends React.Component {
             <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('TripSelect')}>
             </Button>
 
-            <Button title='Logout' onPress={this.onLogoutPress}/>
+            <Button style={styles.logoutButton} title='Logout' onPress={this.onLogoutPress}/>
           </View>
         </ImageBackground>
       </View>
@@ -96,6 +96,12 @@ const styles = StyleSheet.create({
     width: 200
   },
   previousTripsButton: {
+    alignSelf: 'center',
+    width: 200,
+    marginTop: 10
+  },
+  logoutButton: {
+    textAlign: 'center',
     alignSelf: 'center',
     width: 200,
     marginTop: 10
