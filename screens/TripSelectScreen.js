@@ -1,7 +1,10 @@
 import React from 'react';
+
+import {ImageBackground, StyleSheet, View} from 'react-native';
+import {TextInput} from 'react-native-gesture-handler';
+import {Button} from 'react-native-elements';
+import {GAPIKEY} from "../constants/ApiKeys"
 import { ImageBackground, StyleSheet, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { Button } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geocoder from 'react-native-geocoding';
@@ -33,6 +36,7 @@ export default class TripSelectScreen extends React.Component {
     }
 
     render() {
+
         return (
             <View style={styles.container}>
                 <ImageBackground source={require('../assets/images/NewZ.jpg')} style={styles.ImageBackgroundContainer}>
@@ -52,7 +56,7 @@ export default class TripSelectScreen extends React.Component {
                         getDefaultValue={() => ''}
 
                         query={{
-                            key: constants.GAPIKEY,//need to load key
+                            key: GAPIKEY,//need to load key
                             language: 'en', // language of the results
                             types: ['address', 'establishment']
                         }}
@@ -89,13 +93,15 @@ export default class TripSelectScreen extends React.Component {
                         fetchDetails={true}
                         renderDescription={row => row.description}
                         onPress={(data, details = null) => {
+                            //console.log(data, details);
                             this.state.destinationAddress = data.description;
+                            //console.log(this.state.destinationAddress);
                         }}
 
                         getDefaultValue={() => ''}
 
                         query={{
-                            key: constants.GAPIKEY,
+                            key: GAPIKEY,//need to load in key
                             language: 'en', // language of the results
                             types: ['address', 'establishment']
                         }}
@@ -116,16 +122,18 @@ export default class TripSelectScreen extends React.Component {
                         currentLocationLabel="Current location"
                         nearbyPlacesAPI='GooglePlacesSearch'
                         GooglePlacesSearchQuery={{
+
                             // rankby: 'distance',
                             // types: 'food'
                         }}
                         debounce={200}
                     />
                     <Button style={styles.startTripButton} title="Start Trip"
-                        onPress={() => this.props.navigation.navigate('Map', {
-                            origin: this.state.startAddress,
-                            destination: this.state.destinationAddress
-                        })} />
+                            onPress={() => this.props.navigation.navigate('Map', {
+                                origin: this.state.startAddress,
+                                destination: this.state.destinationAddress
+                            })}/>
+
                 </ImageBackground>
             </View>
         );
@@ -148,4 +156,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
 
     },
+    googleAutoCompleteContainer:{
+
+    }
 });

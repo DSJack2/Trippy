@@ -77,11 +77,31 @@ MapStack.navigationOptions = {
   ),
 };
 
+
+const TripSelectStack = createStackNavigator({
+  TripSelect: TripSelectScreen
+});
+
+
+
+TripSelectStack.navigationOptions = {
+  tabBarLabel: 'TripSelect',
+  tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+          focused={focused}
+          name={Platform.OS == 'ios' ? 'ios-map' : 'md-map'}
+      />
+  ),
+};
+
+
 const TabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
-  MapStack
+  MapStack,
+  TripSelectStack
+
 });
 
 export default createAppContainer(TabNavigator);
