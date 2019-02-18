@@ -21,7 +21,7 @@ export default class NewTripScreen extends React.Component {
         let fbOrigin = navigation.getParam('origin', '');
         let fbDestination = navigation.getParam('destination', '');
 
-        firebase.database().ref('Trips/').push({
+        firebase.database().ref('/Trips').push({
             origin: fbOrigin,
             desination: fbDestination,
             dailyDriveTime: this.state.dailyDriveTime,
@@ -60,17 +60,17 @@ export default class NewTripScreen extends React.Component {
         return (
             <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
                 <ScrollView keyboardDismissMode='on-drag' ContentContainerStyle={{ alignItems: 'center' }}>
-                    <Text style={styles.textInputText}>Start Location</Text>
+                    <Text style={styles.textInputText}>Trip Name</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ tripName: text }) }}
                         value={this.state.tripName}
                         editable={true} />
 
-                    <Text style={styles.textInputText}>End Location</Text>
+                    <Text style={styles.textInputText}>Daily Drive Time</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ dailyDriveTime: text }) }}
                         value={this.state.dailyDriveTime}
                         editable={true} />
 
-                    <Text style={styles.textInputText}>Daily Drivetime</Text>
+                    <Text style={styles.textInputText}>Number of Drivers</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ dailyDriveTime: text }) }}
                         value={this.state.dailyDriveTime}
                         editable={true} />
