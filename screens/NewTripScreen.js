@@ -12,6 +12,7 @@ export default class NewTripScreen extends React.Component {
             destination: '',
             dailyDriveTime: '',
             tripName: 'New Trip',
+            numberOfDrivers: 1,
             scenic: false
         };
     }
@@ -21,11 +22,12 @@ export default class NewTripScreen extends React.Component {
         let fbOrigin = navigation.getParam('origin', '');
         let fbDestination = navigation.getParam('destination', '');
 
-        firebase.database().ref('/Trips').push({
+        firebase.database().ref('Trips/').push({
             origin: fbOrigin,
             desination: fbDestination,
             dailyDriveTime: this.state.dailyDriveTime,
             tripName: this.state.tripName,
+            numberOfDrivers: this.state.numberOfDrivers,
             scenic: false
         }).then((data) => {
             console.log('data:', data);
