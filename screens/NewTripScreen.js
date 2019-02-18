@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TextInput, Button, ImageBackground } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
 export default class NewTripScreen extends React.Component {
@@ -7,9 +8,9 @@ export default class NewTripScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            startLoc: 'Hello',
-            endLoc: 'Test',
-            dailyDriveTime: 0,
+            origin: '',
+            destination: '',
+            dailyDriveTime: '',
             tripName: '',
             scenic: false
         };
@@ -30,17 +31,33 @@ export default class NewTripScreen extends React.Component {
         });
     }
 
+    onStartTripPress = () => {
+        const { navigation } = this.props;
+        var navActions = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({
+                    routeName: 'Map',
+                    params: { origin: navigation.getParam('origin', ''), destination: navigation.getParam('destination', '') }
+                })
+            ],
+
+        });
+
+        this.props.navigation.dispatch(navActions);
+    }
+
     render() {
         return (
             <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
                 <ScrollView keyboardDismissMode='on-drag' ContentContainerStyle={{ alignItems: 'center' }}>
                     <Text style={{ alignItems: 'center' }}>Start Location</Text>
-                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ startLoc: text }) }}
+                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ origin: text }) }}
                         value={this.state.startLoc}
                         editable={true} />
 
                     <Text style={{ alignItems: 'center' }}>End Location</Text>
-                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ endLoc: text }) }}
+                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ desination: text }) }}
                         value={this.state.endLoc}
                         editable={true} />
 
@@ -49,7 +66,7 @@ export default class NewTripScreen extends React.Component {
                         value={this.state.dailyDriveTime}
                         editable={true} />
 
-                    <Button buttonStyle={styles.button} title="Test" style={styles.newTripButton} />
+                    <Button buttonStyle={styles.button} title='StartTrip' style={styles.newTripButton} onPress={this.onStartTripPress} />
 
                 </ScrollView>
             </ImageBackground>
@@ -78,6 +95,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignSelf: 'center',
         width: 200
-      },
+    },
 
 });

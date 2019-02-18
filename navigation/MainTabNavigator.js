@@ -4,16 +4,17 @@ import { createStackNavigator, createBottomTabNavigator, createAppContainer } fr
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import MapScreen from '../screens/MapScreen';
 import NewTripScreen from '../screens/NewTripScreen';
 import TripSelectScreen from '../screens/TripSelectScreen';
 
 const NewTripStack = createStackNavigator({
   TripSelect: TripSelectScreen,
-  NewTrip: NewTripScreen
-})
+  NewTrip: NewTripScreen,
+  Map: MapScreen
+}, {
+    headerMode: 'none'
+  })
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -35,34 +36,6 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-    />
-  ),
-};
-
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-    />
-  ),
-};
-
 const MapStack = createStackNavigator({
   Map: MapScreen
 });
@@ -79,7 +52,8 @@ MapStack.navigationOptions = {
 
 
 const TripSelectStack = createStackNavigator({
-  TripSelect: TripSelectScreen
+  TripSelect: TripSelectScreen,
+  Map: MapScreen
 });
 
 
@@ -87,21 +61,21 @@ const TripSelectStack = createStackNavigator({
 TripSelectStack.navigationOptions = {
   tabBarLabel: 'TripSelect',
   tabBarIcon: ({ focused }) => (
-      <TabBarIcon
-          focused={focused}
-          name={Platform.OS == 'ios' ? 'ios-map' : 'md-map'}
-      />
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS == 'ios' ? 'ios-map' : 'md-map'}
+    />
   ),
 };
 
 
 const TabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
   MapStack,
   TripSelectStack
 
+}, {
+  headerMode: 'none'
 });
 
 export default createAppContainer(TabNavigator);
