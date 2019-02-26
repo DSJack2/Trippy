@@ -21,19 +21,25 @@ export default class NewTripScreen extends React.Component {
         const {navigation} = this.props;
         let fbOrigin = navigation.getParam('origin', '');
         let fbDestination = navigation.getParam('destination', '');
-
-        firebase.database().ref('Trips/').push({
-            origin: fbOrigin,
-            desination: fbDestination,
-            dailyDriveTime: this.state.dailyDriveTime,
-            tripName: this.state.tripName,
-            numberOfDrivers: this.state.numberOfDrivers,
-            scenic: false
-        }).then((data) => {
-            console.log('data:', data);
-        }).catch((error) => {
-            console.log('error', error);
+        
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user){
+                firebase.database().ref('Trips/' + user.uid +'/').push({
+                    origin: fbOrigin,
+                    desination: fbDestination,
+                    dailyDriveTime: this.state.dailyDriveTime,
+                    tripName: this.state.tripName,
+                    numberOfDrivers: this.state.numberOfDrivers,
+                    scenic: false
+                }).then((data) => {
+                    console.log('data:', data);
+                }).catch((error) => {
+                    console.log('error', error);
+                });
+            }
         });
+
+        
 
     }
 
@@ -73,7 +79,7 @@ export default class NewTripScreen extends React.Component {
                         editable={true} />
 
                     <Text style={styles.textInputText}>Number of Drivers</Text>
-                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ dailyDriveTime: text }) }}
+                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ numberOfDrivers: text }) }}
                         value={this.state.dailyDriveTime}
                         editable={true} />
 
