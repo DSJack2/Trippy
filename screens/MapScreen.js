@@ -4,7 +4,11 @@ import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import { TextInput } from 'react-native-gesture-handler';
 import Geocoder from 'react-native-geocoding';
-import * as constants from '../constants/ApiKeys'
+import * as constants from '../constants/ApiKeys';
+import MapViewDirections from 'react-native-maps-directions'
+
+const initialLat= 39.8283;
+const initialLng = -98.5795;
 
 export default class MapScreen extends React.Component {
     static navigationOptions = {
@@ -18,7 +22,6 @@ export default class MapScreen extends React.Component {
             startLng: 0,
             endLat: 0,
             endLng: 0,
-
         }
     }
 
@@ -40,6 +43,7 @@ export default class MapScreen extends React.Component {
                 this.setState({ 'endLng': json.results[0].geometry.location.lng });
             })
             .catch(error => console.warn(error));
+
     }
 
 
@@ -48,16 +52,22 @@ export default class MapScreen extends React.Component {
         this.setMarkers();
         return (
             <View style={styles.container}>
-                {/*//<Text>origin: {JSON.stringify(origin)}</Text>*/}
                 <MapView
                     style={{ flex: 1 }}
                     provider="google"
                     initialRegion={{
-                        latitude: 36.174465,
-                        longitude: -86.767960,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}>
+                        latitude: initialLat,
+                        longitude: initialLng,
+                        latitudeDelta: 35,
+                        longitudeDelta: 35,
+                    }}
+                    showsUserLocation = {true}
+                    rotateEnabled = {false}
+                    loadingEnabled = {true}>
+                    <MapViewDirections apikey={constants.GAPIKEY}
+                    origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
+                    destination={{ latitude: this.state.endLat, longitude: this.state.endLng}}
+                    />
                     <MapView.Marker
                         coordinate={{
                             latitude: this.state.startLat,
@@ -73,7 +83,6 @@ export default class MapScreen extends React.Component {
                         title={"Destination"}
                     />
                 </MapView>
-                {/*<Text>destination: {JSON.stringify(destination)}</Text>*/}
             </View>
         );
     }
