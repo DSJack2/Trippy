@@ -12,7 +12,7 @@ export default class NewTripScreen extends React.Component {
             destination: '',
             dailyDriveTime: '',
             tripName: 'New Trip',
-            numberOfDrivers: 1,
+            numberOfDrivers: '',
             scenic: false
         };
     }
@@ -62,6 +62,7 @@ export default class NewTripScreen extends React.Component {
     onStartTripPress = () => {
         this.writeNewTrip();
         this.navigateToMap();
+
     }
 
     render() {
@@ -80,7 +81,7 @@ export default class NewTripScreen extends React.Component {
 
                     <Text style={styles.textInputText}>Number of Drivers</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ numberOfDrivers: text }) }}
-                        value={this.state.dailyDriveTime}
+                        value={this.state.numberOfDrivers}
                         editable={true} />
 
                     <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton} onPress={this.onStartTripPress.bind(this)} />

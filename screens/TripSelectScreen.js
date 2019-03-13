@@ -128,7 +128,7 @@ export default class TripSelectScreen extends React.Component {
                         debounce={200}
                     />
                     <Button style={styles.startTripButton} buttonStyle={styles.button} title="Next"
-                        onPress={this.onNextPress} />
+                        onPress={() => this.props.navigation.navigate('NewTrip', {origin: this.state.startAddress, destination: this.state.destinationAddress})} />
 
                 </ImageBackground>
             </View>

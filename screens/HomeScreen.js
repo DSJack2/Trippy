@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
 
             </Button>
 
-            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('TripSelect')}>
+            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('PreviousTrip')}>
             </Button>
 
             <Button style={styles.logoutButton} title='Logout' onPress={this.onLogoutPress}/>

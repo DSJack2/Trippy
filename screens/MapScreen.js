@@ -11,9 +11,6 @@ const initialLat= 39.8283;
 const initialLng = -98.5795;
 
 export default class MapScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Map',
-    };
 
     constructor(props) {
         super(props);
@@ -50,10 +47,11 @@ export default class MapScreen extends React.Component {
 
     render() {
         this.setMarkers();
+        console.log(this.props.navigation.state);
         return (
             <View style={styles.container}>
                 <MapView
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, zIndex: -1}}
                     provider="google"
                     initialRegion={{
                         latitude: initialLat,
@@ -66,7 +64,10 @@ export default class MapScreen extends React.Component {
                     loadingEnabled = {true}>
                     <MapViewDirections apikey={constants.GAPIKEY}
                     origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
-                    destination={{ latitude: this.state.endLat, longitude: this.state.endLng}}
+                    destination={{latitude: this.state.endLat, longitude: this.state.endLng}}
+                    strokeWidth={3}
+                    strokeColor='#4a89f3'
+                    lineJoin='round'
                     />
                     <MapView.Marker
                         coordinate={{
