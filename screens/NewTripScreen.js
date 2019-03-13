@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, Button, ImageBackground, Alert } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import {StyleSheet, View, ScrollView, Text, TextInput, Button, ImageBackground, Alert} from 'react-native';
+import {StackActions, NavigationActions} from 'react-navigation';
 import * as firebase from 'firebase';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class NewTripScreen extends React.Component {
 
@@ -12,7 +14,7 @@ export default class NewTripScreen extends React.Component {
             destination: '',
             dailyDriveTime: '',
             tripName: 'New Trip',
-            numberOfDrivers: '',
+            numberOfDrivers: '1',
             scenic: false
         };
     }
@@ -21,10 +23,10 @@ export default class NewTripScreen extends React.Component {
         const {navigation} = this.props;
         let fbOrigin = navigation.getParam('origin', '');
         let fbDestination = navigation.getParam('destination', '');
-        
+
         firebase.auth().onAuthStateChanged((user) => {
-            if(user){
-                firebase.database().ref('Trips/' + user.uid +'/').push({
+            if (user) {
+                firebase.database().ref('Trips/' + user.uid + '/').push({
                     origin: fbOrigin,
                     desination: fbDestination,
                     dailyDriveTime: this.state.dailyDriveTime,
@@ -39,18 +41,20 @@ export default class NewTripScreen extends React.Component {
             }
         });
 
-        
 
     }
 
     navigateToMap = () => {
-        const { navigation } = this.props;
+        const {navigation} = this.props;
         var navActions = StackActions.reset({
             index: 0,
             actions: [
                 NavigationActions.navigate({
                     routeName: 'Map',
-                    params: { origin: navigation.getParam('origin', ''), destination: navigation.getParam('destination', '') }
+                    params: {
+                        origin: navigation.getParam('origin', ''),
+                        destination: navigation.getParam('destination', '')
+                    }
                 })
             ],
 
@@ -67,24 +71,54 @@ export default class NewTripScreen extends React.Component {
 
     render() {
         return (
-            <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
-                <ScrollView keyboardDismissMode='on-drag' ContentContainerStyle={{ alignItems: 'center' }}>
+            <ImageBackground source={require('../assets/images/road-mountains.jpg')}
+                             style={styles.ImageBackgroundContainer}>
+                <ScrollView keyboardDismissMode='on-drag' ContentContainerStyle={{alignItems: 'center'}}>
                     <Text style={styles.textInputText}>Trip Name</Text>
-                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ tripName: text }) }}
-                        value={this.state.tripName}
-                        editable={true} />
+                    <TextInput style={styles.startLoc} onChangeText={(text) => {
+                        this.setState({tripName: text})
+                    }}
+                               value={this.state.tripName}
+                               editable={true}/>
 
                     <Text style={styles.textInputText}>Daily Drive Time</Text>
-                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ dailyDriveTime: text }) }}
-                        value={this.state.dailyDriveTime}
-                        editable={true} />
+                    <TextInput style={styles.startLoc} onChangeText={(text) => {
+                        this.setState({dailyDriveTime: text})
+                    }}
+                               value={this.state.dailyDriveTime}
+                               editable={true}/>
 
                     <Text style={styles.textInputText}>Number of Drivers</Text>
-                    <TextInput style={styles.startLoc} onChangeText={(text) => { this.setState({ numberOfDrivers: text }) }}
-                        value={this.state.numberOfDrivers}
-                        editable={true} />
-
-                    <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton} onPress={this.onStartTripPress.bind(this)} />
+                    <TextInput style={styles.startLoc} onChangeText={(text) => {
+                        this.setState({numberOfDrivers: text})
+                    }}
+                               value={this.state.numberOfDrivers}
+                               editable={true}/>
+                    <ActionButton buttonColor="red"
+                                  position={'center'}
+                                  offsetY={490}>
+                        <ActionButton.Item buttonColor='green' title="Food" onPress={() => console.log("add criteria")}>
+                            <Icon name="md-create" style={styles.actionButtonIcon}/>
+                        </ActionButton.Item>
+                        {/*<ActionButton.Item buttonColor='purple' title="Gas station"*/}
+                                           {/*onPress={() => console.log("add criteria")}>*/}
+                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
+                        {/*</ActionButton.Item>*/}
+                        {/*<ActionButton.Item buttonColor='yellow' title="Sightseeing"*/}
+                                           {/*onPress={() => console.log("add criteria")}>*/}
+                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
+                        {/*</ActionButton.Item>*/}
+                        {/*<ActionButton.Item buttonColor='white' title="Lounging"*/}
+                                           {/*onPress={() => console.log("add criteria")}>*/}
+                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
+                        {/*</ActionButton.Item>*/}
+                        {/*<ActionButton.Item buttonColor='black' title="Rest Stop"*/}
+                                           {/*onPress={() => console.log("add criteria")}>*/}
+                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
+                        {/*</ActionButton.Item>*/}
+                    </ActionButton>
+                    <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton}
+                            onPress={this.onStartTripPress.bind(this)}/>
 
                 </ScrollView>
             </ImageBackground>
