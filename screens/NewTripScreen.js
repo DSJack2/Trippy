@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, ScrollView, Text, TextInput, Button, ImageBackground, Alert} from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import * as firebase from 'firebase';
-import ActionButton from 'react-native-action-button';
+// import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class NewTripScreen extends React.Component {
@@ -94,29 +94,7 @@ export default class NewTripScreen extends React.Component {
                     }}
                                value={this.state.numberOfDrivers}
                                editable={true}/>
-                    <ActionButton buttonColor="red"
-                                  position={'center'}
-                                  offsetY={490}>
-                        <ActionButton.Item buttonColor='green' title="Food" onPress={() => console.log("add criteria")}>
-                            <Icon name="md-create" style={styles.actionButtonIcon}/>
-                        </ActionButton.Item>
-                        {/*<ActionButton.Item buttonColor='purple' title="Gas station"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                        {/*<ActionButton.Item buttonColor='yellow' title="Sightseeing"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                        {/*<ActionButton.Item buttonColor='white' title="Lounging"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                        {/*<ActionButton.Item buttonColor='black' title="Rest Stop"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                    </ActionButton>
+                    
                     <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton}
                             onPress={this.onStartTripPress.bind(this)}/>
 
