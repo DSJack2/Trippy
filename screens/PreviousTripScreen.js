@@ -9,6 +9,7 @@ export default class NewTripScreen extends React.Component {
         super(props);
         this.state = {
             currentUser: null,
+            data: [],
             origin: '',
             destination: '',
             dailyDriveTime: '',
@@ -30,9 +31,12 @@ export default class NewTripScreen extends React.Component {
         let trips = firebase.database().ref(`Trips/` + this.state.currentUser.uid);
         console.log(trips);
         trips.on('value', (snapshot) => {
-            console.log(snapshot.val().tripName);
-            tripArray = snapshot.val();
-        })
+            snapshot.forEach((child) => {
+                console.log(child);
+                tripArray.push(child);
+            });
+            this.setState({data: tripArray});
+        });
     }
 
     navigateToMap = () => {
