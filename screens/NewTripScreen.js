@@ -25,8 +25,8 @@ export default class NewTripScreen extends React.Component {
             category: '', // category of trip param/criteria
             criteriaName: '',//criteria name
             hoursInTrip: '',
+            minutesInTrip: '',
             isModalVisible: false,
-
         };
     }
 
@@ -134,9 +134,7 @@ export default class NewTripScreen extends React.Component {
         // firebase.auth().onAuthStateChanged((user) => {
         //     if (user) {
         //         firebase.database().ref('Trips/' + user.uid + '/').push({
-        //             category: this.state.category,
-        //             criteriaLoc: this.state.criteriaLoc,
-        //             criteriaName: this.state.criteriaName,
+        // some trip information
         //         }).then((data) => {
         //             console.log('data:', data);
         //         }).catch((error) => {
@@ -144,14 +142,13 @@ export default class NewTripScreen extends React.Component {
         //         });
         //     }
         // });
-        console.log(this.state.category);
+        console.log(this.state.criteriaName);
         this.array.push({
             category: this.state.category,
-            criteriaLoc: this.state.criteriaLoc,
-            criteriaName: this.state.criteriaName,
+            criteriaLoc: this.state.criteriaName,
+            criteriaName: this.state.hoursInTrip,
         });
-
-        this.setState({ tripCriteria: [...this.array] });
+        this.setState({tripCriteria: [...this.array] });
         this.setState({hidden : false});
         this.setState({isModalVisible: false});
     };
@@ -196,9 +193,7 @@ export default class NewTripScreen extends React.Component {
                             backgroundColor: 'white',
                         }}>
                             <Text style={styles.modalTextCategory} >Category</Text>
-                            <TextInput position={'absolute'}
-                                       left ={WIDTH/2}
-                                       top = {10}
+                            <TextInput
                                 placeholder="Category"
                                 defaultValue={''}
                                 onChangeText={(text) => this.setState({category: text})}
@@ -306,25 +301,16 @@ const styles = StyleSheet.create({
         alignContent: 'center'
     },
     modalTextCategory:{
-        marginTop: -5,
         fontWeight:'bold',
-        position: 'absolute',
-        left: WIDTH/2,
-        top: 0,
+        alignContent:'center',
     },
     modalTextTripCriteria: {
-        marginTop: -5,
         fontWeight:'bold',
-        position: 'absolute',
-        left: WIDTH/2,
-        top: HEIGHT/2,
+        alignContent:'center',
     },
     modalHoursCategory: {
-        marginTop: -5,
         fontWeight:'bold',
-        position: 'absolute',
-        left: WIDTH/2,
-        top: 400,
+        alignContent:'center',
     }
 
 
