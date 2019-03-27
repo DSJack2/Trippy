@@ -1,21 +1,32 @@
 import React from 'react';
-import {StyleSheet, View, ScrollView, Text, TextInput, Button, ImageBackground, Alert} from 'react-native';
-import {StackActions, NavigationActions} from 'react-navigation';
+import {StyleSheet, View, ScrollView, Text, TextInput, Button, ImageBackground, Alert, FlatList,TouchableOpacity, Picker,Dimensions} from 'react-native';
+import {StackActions, NavigationActions,} from 'react-navigation';
 import * as firebase from 'firebase';
+import Modal from "react-native-modal";
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+const {WIDTH,HEIGHT} = Dimensions.get('window');
 
 export default class NewTripScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        this.array = [
+        ];
         this.state = {
             origin: '',
             destination: '',
             dailyDriveTime: '',
             tripName: 'New Trip',
             numberOfDrivers: '1',
-            scenic: false
+            scenic: false,
+            tripCriteria: [],
+            category: '', // category of trip param/criteria
+            criteriaName: '',//criteria name
+            hoursInTrip: '',
+            isModalVisible: false,
+
         };
     }
 
@@ -42,7 +53,7 @@ export default class NewTripScreen extends React.Component {
         });
 
 
-    }
+    };
 
     navigateToMap = () => {
         const {navigation} = this.props;
@@ -61,11 +72,91 @@ export default class NewTripScreen extends React.Component {
         });
 
         this.props.navigation.dispatch(navActions);
-    }
+    };
 
     onStartTripPress = () => {
-        this.writeNewTrip();
-        this.navigateToMap();
+        if (this.state.destination.trim() === '' || this.state.origin.trim() === '') { //not working correctly
+            this.writeNewTrip();
+            this.navigateToMap();
+        } else{
+            Alert.alert("Please enter a destination and origin address");
+        }
+    };
+
+
+    renderSeparator = () => {
+        return (
+            <View
+                style={{
+                    height: 1,
+                    width: "86%",
+                    backgroundColor: "#CED0CE",
+                    marginLeft: "14%"
+                }}
+            />
+        );
+    };
+
+
+    componentDidMount() {
+        this.setState({ tripCriteria: [...this.array] })
+    };
+
+    _toggleModal = () => {
+        this.setState({isModalVisible: !this.state.isModalVisible});
+    }
+
+
+    _renderListItem(item) {
+        return(
+        <TouchableOpacity
+            style={{
+                backgroundColor: 'white',
+                borderRadius: 3,
+                borderWidth: 1,
+                borderColor: 'black',
+                width: WIDTH,
+                height: 50
+            }}
+            onPress={() => {
+
+            }}>
+            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                {item.category}</Text>
+            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                {item.criteriaName}</Text>
+            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                {item.hoursInTrip}</Text>
+        </TouchableOpacity>);
+    }
+
+    _hide = () => {
+        // firebase.auth().onAuthStateChanged((user) => {
+        //     if (user) {
+        //         firebase.database().ref('Trips/' + user.uid + '/').push({
+        //             category: this.state.category,
+        //             criteriaLoc: this.state.criteriaLoc,
+        //             criteriaName: this.state.criteriaName,
+        //         }).then((data) => {
+        //             console.log('data:', data);
+        //         }).catch((error) => {
+        //             console.log('error', error);
+        //         });
+        //     }
+        // });
+        console.log(this.state.category);
+        this.array.push({
+            category: this.state.category,
+            criteriaLoc: this.state.criteriaLoc,
+            criteriaName: this.state.criteriaName,
+        });
+
+        this.setState({ tripCriteria: [...this.array] });
+        this.setState({hidden : false});
+        this.setState({isModalVisible: false});
+    };
+
+    _hideCriteria = () => {
 
     }
 
@@ -94,29 +185,74 @@ export default class NewTripScreen extends React.Component {
                     }}
                                value={this.state.numberOfDrivers}
                                editable={true}/>
-                    <ActionButton buttonColor="red"
-                                  position={'center'}
-                                  offsetY={490}>
-                        <ActionButton.Item buttonColor='green' title="Food" onPress={() => console.log("add criteria")}>
-                            <Icon name="md-create" style={styles.actionButtonIcon}/>
-                        </ActionButton.Item>
-                        {/*<ActionButton.Item buttonColor='purple' title="Gas station"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                        {/*<ActionButton.Item buttonColor='yellow' title="Sightseeing"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                        {/*<ActionButton.Item buttonColor='white' title="Lounging"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                        {/*<ActionButton.Item buttonColor='black' title="Rest Stop"*/}
-                                           {/*onPress={() => console.log("add criteria")}>*/}
-                            {/*<Icon name="md-create" style={styles.actionButtonIcon}/>*/}
-                        {/*</ActionButton.Item>*/}
-                    </ActionButton>
+
+                    <Button title= 'Add Trip Criteria' color = 'red' onPress={this._toggleModal} style={styles.button} position ='center'>
+                    </Button>
+
+
+                    <Modal isVisible={this.state.isModalVisible}
+                           animationIn='bounceIn'
+                           onBackdropPress={this._toggleModal}>
+                        <View style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'white',
+                        }}>
+                            <Text style={styles.modalTextCategory} >Category</Text>
+                            <TextInput position={'absolute'}
+                                       left ={WIDTH/2}
+                                       top = {10}
+                                placeholder="Category"
+                                defaultValue={''}
+                                onChangeText={(text) => this.setState({category: text})}
+                            />
+                            <Text style={styles.modalTextTripCriteria} >Trip Criteria</Text>
+                            <TextInput
+                                placeholder="Criteria"
+                                defaultValue={''}
+                                onChangeText={(text) => this.setState({criteriaName: text})}
+                            />
+                            <Text style={styles.modalHoursCategory}>Hours in Trip</Text>
+                            <TextInput
+                                placeholder="Hours in Trip"
+                                defaultValue={''}
+                                onChangeText={(text) => this.setState({hoursInTrip: text})}
+                            />
+                            <TouchableOpacity onPress={this._hide}>
+                                <Text style = {{ color: 'red'}}>Submit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+
+                    {/*{*/}
+                        {/*this.state.Food ?*/}
+                            {/*<View  style = {styles.container} hide={false}>*/}
+                                {/*<Picker*/}
+                                    {/*selectedValue={this.state.category}*/}
+                                    {/*onValueChange={(itemValue, itemIndex) =>*/}
+                                        {/*this.setState({category: itemValue})*/}
+                                    {/*}>*/}
+                                    {/*<Picker.Item label="Foohahahahd" value="Food" />*/}
+                                    {/*<Picker.Item label="Gas Station" value="Gas Station" />*/}
+                                    {/*<Picker.Item label="Rest Station" value="Rest Station" />*/}
+                                    {/*<Picker.Item label="Scenic Sight" value="Scenic Sight" />*/}
+                                    {/*<Picker.Item label="Hotel" value="Hotel " />*/}
+                                {/*</Picker>*/}
+                                {/*<Button title={"Submit"} color= 'purple' onPress={this._hideCriteria}/>*/}
+                            {/*</View> : null*/}
+                    {/*}*/}
+
+                    <FlatList
+                        data={this.state.tripCriteria}
+                        width='100%'
+                        extraData={this.state.tripCriteria}
+                        keyExtractor={(x,i) => i.toString()}
+                        ItemSeparatorComponent={this.renderSeparator}
+                        renderItem = {({item}) => this._renderListItem(item)}
+                    />
+
+
                     <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton}
                             onPress={this.onStartTripPress.bind(this)}/>
 
@@ -153,8 +289,48 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
         fontSize: 20,
-        color: '#ffffff'
+        color: '#ffffff',
+        fontWeight: 'bold',
+    },
+    flatList:{
+        marginTop: 100
+    },
+    buttonText:{
+        color: 'white',
 
+    },
+
+    textStyle:{
+        color: 'red',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+
+    },
+    container: {
+        justifyContent: 'center',
+        alignContent: 'center'
+    },
+    modalTextCategory:{
+        marginTop: -5,
+        fontWeight:'bold',
+        position: 'absolute',
+        left: WIDTH/2,
+        top: 0,
+    },
+    modalTextTripCriteria: {
+        marginTop: -5,
+        fontWeight:'bold',
+        position: 'absolute',
+        left: WIDTH/2,
+        top: HEIGHT/2,
+    },
+    modalHoursCategory: {
+        marginTop: -5,
+        fontWeight:'bold',
+        position: 'absolute',
+        left: WIDTH/2,
+        top: 400,
     }
+
 
 });

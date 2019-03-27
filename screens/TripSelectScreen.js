@@ -72,6 +72,7 @@ export default class TripSelectScreen extends React.Component {
                                 color: '#1faadb'
                             }
                         }}
+                        enablePoweredByContainer={false}
                         currentLocation={true}
                         currentLocationLabel="Current location"
                         nearbyPlacesAPI='GoogleReverseGeocoding'
@@ -117,11 +118,11 @@ export default class TripSelectScreen extends React.Component {
                                 color: '#1faadb'
                             }
                         }}
+                        enablePoweredByContainer={false}
                         currentLocation={true}
                         currentLocationLabel="Current location"
                         nearbyPlacesAPI='GooglePlacesSearch'
                         GooglePlacesSearchQuery={{
-
                             // rankby: 'distance',
                             // types: 'food'
                         }}
@@ -155,4 +156,5 @@ const styles = StyleSheet.create({
     googleAutoCompleteContainer: {
 
     }
+
 });
