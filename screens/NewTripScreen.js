@@ -156,10 +156,6 @@ export default class NewTripScreen extends React.Component {
         this.setState({isModalVisible: false});
     };
 
-    _hideCriteria = () => {
-
-    }
-
     render() {
         return (
             <ImageBackground source={require('../assets/images/road-mountains.jpg')}
@@ -251,7 +247,6 @@ export default class NewTripScreen extends React.Component {
                         ItemSeparatorComponent={this.renderSeparator}
                         renderItem = {({item}) => this._renderListItem(item)}
                     />
-
 
                     <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton}
                             onPress={this.onStartTripPress.bind(this)}/>
