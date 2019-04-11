@@ -1,19 +1,32 @@
 import React from 'react';
-import {StyleSheet, View, ScrollView, Text, TextInput, Button, ImageBackground, Alert, FlatList,TouchableOpacity, Picker,Dimensions} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    ScrollView,
+    Text,
+    TextInput,
+    Button,
+    ImageBackground,
+    FlatList,
+    TouchableOpacity,
+    Dimensions
+} from 'react-native';
 import {StackActions, NavigationActions,} from 'react-navigation';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
+import ModalSelector from 'react-native-modal-selector';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const {WIDTH,HEIGHT} = Dimensions.get('window');
+
+const {WIDTH, HEIGHT} = Dimensions.get('window');
 
 export default class NewTripScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.array = [
-        ];
+        this.array = [];
         this.state = {
             origin: '',
             destination: '',
@@ -24,9 +37,17 @@ export default class NewTripScreen extends React.Component {
             tripCriteria: [],
             category: '', // category of trip param/criteria
             criteriaName: '',//criteria name
-            hoursInTrip: '',
-            minutesInTrip: '',
+            time: '',
             isModalVisible: false,
+            foodVisible: false,
+            gasStationVisible: false,
+            restStopVisible: false,
+            attractionsVisible: false,
+            hotelVisible: false,
+            isDateTimePickerVisible: false,
+            otherVisible:false,
+            submitVisible:false,
+            timeVisible : false,
         };
     }
 
@@ -51,8 +72,6 @@ export default class NewTripScreen extends React.Component {
                 });
             }
         });
-
-
     };
 
     navigateToMap = () => {
@@ -64,7 +83,8 @@ export default class NewTripScreen extends React.Component {
                     routeName: 'Map',
                     params: {
                         origin: navigation.getParam('origin', ''),
-                        destination: navigation.getParam('destination', '')
+                        destination: navigation.getParam('destination', ''),
+                        tripInfo: navigation.getParam('tripCriteria', '')
                     }
                 })
             ],
@@ -75,12 +95,8 @@ export default class NewTripScreen extends React.Component {
     };
 
     onStartTripPress = () => {
-        if (this.state.destination.trim() === '' || this.state.origin.trim() === '') { //not working correctly
             this.writeNewTrip();
             this.navigateToMap();
-        } else{
-            Alert.alert("Please enter a destination and origin address");
-        }
     };
 
 
@@ -99,38 +115,93 @@ export default class NewTripScreen extends React.Component {
 
 
     componentDidMount() {
-        this.setState({ tripCriteria: [...this.array] })
+        this.setState({tripCriteria: [...this.array]})
     };
 
     _toggleModal = () => {
         this.setState({isModalVisible: !this.state.isModalVisible});
-    }
+    };
+
+    setCriteria = (option) => {
+
+        if (option.label == "Food") {
+            this.state.category = "Food";
+            this.setState({foodVisible: true});
+            this.setState({gasStationVisible: false});
+            this.setState({hotelVisible: false});
+            this.setState({attractionsVisible: false});
+            this.setState({restStopVisible: false});
+            this.setState({otherVisible: false});
+        } else if (option.label == "Gas Station") {
+            this.state.category = "Gas Station";
+            this.setState({foodVisible: false});
+            this.setState({gasStationVisible: true});
+            this.setState({hotelVisible: false});
+            this.setState({attractionsVisible: false});
+            this.setState({restStopVisible: false});
+            this.setState({otherVisible: false});
+        } else if (option.label == "Attractions") {
+            this.state.category = "Attractions";
+            this.setState({foodVisible: false});
+            this.setState({gasStationVisible: false});
+            this.setState({hotelVisible: false});
+            this.setState({attractionsVisible: true});
+            this.setState({restStopVisible: false});
+            this.setState({otherVisible: false});
+        } else if (option.label == "Hotels") {
+            this.state.category = "Hotels";
+            this.setState({foodVisible: false});
+            this.setState({gasStationVisible: false});
+            this.setState({hotelVisible: true});
+            this.setState({attractionsVisible: false});
+            this.setState({restStopVisible: false});
+            this.setState({otherVisible: false});
+        } else if (option.label == "Rest Stops") {
+            this.state.category = "Rest Stops";
+            this.setState({foodVisible: false});
+            this.setState({gasStationVisible: false});
+            this.setState({hotelVisible: false});
+            this.setState({attractionsVisible: false});
+            this.setState({restStopVisible: true});
+            this.setState({otherVisible: false});
+        }else if(option.label == "Other"){
+            this.setState({foodVisible: false});
+            this.setState({gasStationVisible: false});
+            this.setState({hotelVisible: false});
+            this.setState({attractionsVisible: false});
+            this.setState({restStopVisible: false});
+            this.setState({otherVisible: true});
+        } this.setState({timeVisible: true});
+
+    };
 
 
     _renderListItem(item) {
-        return(
-        <TouchableOpacity
-            style={{
-                backgroundColor: 'white',
-                borderRadius: 3,
-                borderWidth: 1,
-                borderColor: 'black',
-                width: WIDTH,
-                height: 50
-            }}
-            onPress={() => {
+        console.log(item.criteriaName);
+        return (
+            <TouchableOpacity
+                style={{
+                    backgroundColor: 'white',
+                    borderRadius: 3,
+                    borderWidth: 1,
+                    borderColor: 'black',
+                    width: WIDTH,
+                    height: 50
+                }}
+                onPress={() => {
 
-            }}>
-            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
-                {item.category}</Text>
-            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
-                {item.criteriaName}</Text>
-            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
-                {item.hoursInTrip}</Text>
-        </TouchableOpacity>);
-    }
+                }}>
 
-    _hide = () => {
+                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                    {item.category}: {item.criteriaName}</Text>
+                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                    {item.time}</Text>
+            </TouchableOpacity>);
+    };
+
+    //deleteListItem(){};
+
+    _addTripInfo = () => {
         // firebase.auth().onAuthStateChanged((user) => {
         //     if (user) {
         //         firebase.database().ref('Trips/' + user.uid + '/').push({
@@ -142,18 +213,94 @@ export default class NewTripScreen extends React.Component {
         //         });
         //     }
         // });
-        console.log(this.state.criteriaName);
         this.array.push({
             category: this.state.category,
-            criteriaLoc: this.state.criteriaName,
-            criteriaName: this.state.hoursInTrip,
+            time: this.state.time,
+            criteriaName: this.state.criteriaName,
         });
-        this.setState({tripCriteria: [...this.array] });
-        this.setState({hidden : false});
+        this.setState({tripCriteria: [...this.array]});
+        this.setState({hidden: false});
         this.setState({isModalVisible: false});
+        this.setState({foodVisible: false});
+        this.setState({gasStationVisible: false});
+        this.setState({hotelVisible: false});
+        this.setState({attractionsVisible: false});
+        this.setState({restStopVisible: false});
+        this.setState({otherVisible: false});
+        this.setState({timeVisible: false});
+        this.setState({submitVisible: false});
+    };
+
+    _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+    _hideDateTimePicker = () => {
+        this.setState({isDateTimePickerVisible: false});
+        this.setState({submitVisible: true});
+    }
+    ;
+
+    _handleDatePicked = (date) => {
+        var x = this.parseDate(date);
+        this.setState({time: x});
+        this._hideDateTimePicker();
+    };
+
+    //converts date to hrs:minutes time period format
+    parseDate = (date) => {
+        var hrs = date.getHours() % 12;
+        var timePeriod = "AM";
+        if (hrs >= 12) {
+            hrs = hrs - 12;
+            timePeriod = "PM";
+        }
+        if (hrs === 0) {
+            hrs = 12;
+            timePeriod = "PM"
+        }
+        var min = date.getMinutes();
+        var str = "" + hrs + ":" + min + " " + timePeriod;
+        return str;
     };
 
     render() {
+        let index = 0;
+        const data = [
+            {key: index++, section: true, label: 'Categories'},
+            {key: index++, label: 'Food'},
+            {key: index++, label: 'Gas Station'},
+            {key: index++, label: 'Attractions',},
+            {key: index++, label: 'Hotels'},
+            {key: index++, label: 'Rest Stops'},
+            {key: index++, label: 'Other'}
+        ];
+        const food = [
+            {key: index++, section: true, label: 'Food Genre'},
+            {key: index++, label: 'American'},
+            {key: index++, label: 'Chinese'},
+            {key: index++, label: 'Italian',},
+            {key: index++, label: 'Greek'},
+            {key: index++, label: 'Mexican'},
+            {key: index++, label: 'Fast Food'},
+            {key: index++, label: 'Thai'},
+            {key: index++, label: 'Japanese',},
+            {key: index++, label: 'Indian'},
+            {key: index++, label: 'Vietnamese'}
+        ];
+        const hotels = [
+            {key: index++, section: true, label: 'Hotels'},
+            {key: index++, label: 'Cheap'},
+            {key: index++, label: 'Normal'},
+            {key: index++, label: 'Expensive'}
+        ];
+        const attractions = [
+            {key: index++, section: true, label: 'Attractions'},
+            {key: index++, label: 'Museum'},
+            {key: index++, label: 'Scenic'},
+            {key: index++, label: 'Park'},
+            {key: index++, label: 'Zoo'},
+            {key: index++, label: 'Child Friendly'},
+        ];
+
         return (
             <ImageBackground source={require('../assets/images/road-mountains.jpg')}
                              style={styles.ImageBackgroundContainer}>
@@ -179,68 +326,71 @@ export default class NewTripScreen extends React.Component {
                                value={this.state.numberOfDrivers}
                                editable={true}/>
 
-                    <Button title= 'Add Trip Criteria' color = 'red' onPress={this._toggleModal} style={styles.button} position ='center'>
+                    <Button title='Add Trip Criteria' color='red' onPress={this._toggleModal} style={styles.button}
+                            position='center'>
                     </Button>
+
+
 
 
                     <Modal isVisible={this.state.isModalVisible}
                            animationIn='bounceIn'
-                           onBackdropPress={this._toggleModal}>
+                           onBackdropPress={() => this.setState({isModalVisible: false})}
+                    >
                         <View style={{
-                            flex: 1,
+                            flex: 0.5,
                             justifyContent: 'center',
                             alignItems: 'center',
                             backgroundColor: 'white',
                         }}>
-                            <Text style={styles.modalTextCategory} >Category</Text>
-                            <TextInput
-                                placeholder="Category"
-                                defaultValue={''}
-                                onChangeText={(text) => this.setState({category: text})}
+
+                            <ModalSelector
+                                data={data}
+                                initValue="Categories"
+                                onChange={(option) => this.setCriteria(option)}/>
+                            {this.state.foodVisible ? <ModalSelector
+                                data={food}
+                                initValue="Food Genre"
+                                onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
+                            {this.state.attractionsVisible ? <ModalSelector
+                                data={attractions}
+                                initValue="Attractions"
+                            onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
+                            {this.state.hotelVisible ? <ModalSelector
+                                data={hotels}
+                                initValue="Hotels"
+                                onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
+                            {this.state.otherVisible ?
+                                <TextInput
+                                    style = {styles.input}
+                                    placeholder="Category"
+                                    defaultValue={''}
+                                    onChangeText={(text) => this.setState({category: text})} />
+                                     : null}
+                            {this.state.timeVisible ?<TouchableOpacity onPress={this._showDateTimePicker}>
+                                <Text style = {{color: 'green'}}>Pick a Time</Text>
+                            </TouchableOpacity> : null }
+
+                            <DateTimePicker
+                                titleIOS={"Choose a Time"}
+                                mode = 'time'
+                                isVisible={this.state.isDateTimePickerVisible}
+                                onConfirm={this._handleDatePicked}
+                                onCancel={this._hideDateTimePicker}
                             />
-                            <Text style={styles.modalTextTripCriteria} >Trip Criteria</Text>
-                            <TextInput
-                                placeholder="Criteria"
-                                defaultValue={''}
-                                onChangeText={(text) => this.setState({criteriaName: text})}
-                            />
-                            <Text style={styles.modalHoursCategory}>Hours in Trip</Text>
-                            <TextInput
-                                placeholder="Hours in Trip"
-                                defaultValue={''}
-                                onChangeText={(text) => this.setState({hoursInTrip: text})}
-                            />
-                            <TouchableOpacity onPress={this._hide}>
-                                <Text style = {{ color: 'red'}}>Submit</Text>
-                            </TouchableOpacity>
+                            {this.state.submitVisible ? <TouchableOpacity onPress={this._addTripInfo} style ={{marginTop: 50}}>
+                                <Text style={{color: 'red'}}>Submit</Text>
+                            </TouchableOpacity>:null}
                         </View>
                     </Modal>
-
-                    {/*{*/}
-                        {/*this.state.Food ?*/}
-                            {/*<View  style = {styles.container} hide={false}>*/}
-                                {/*<Picker*/}
-                                    {/*selectedValue={this.state.category}*/}
-                                    {/*onValueChange={(itemValue, itemIndex) =>*/}
-                                        {/*this.setState({category: itemValue})*/}
-                                    {/*}>*/}
-                                    {/*<Picker.Item label="Foohahahahd" value="Food" />*/}
-                                    {/*<Picker.Item label="Gas Station" value="Gas Station" />*/}
-                                    {/*<Picker.Item label="Rest Station" value="Rest Station" />*/}
-                                    {/*<Picker.Item label="Scenic Sight" value="Scenic Sight" />*/}
-                                    {/*<Picker.Item label="Hotel" value="Hotel " />*/}
-                                {/*</Picker>*/}
-                                {/*<Button title={"Submit"} color= 'purple' onPress={this._hideCriteria}/>*/}
-                            {/*</View> : null*/}
-                    {/*}*/}
 
                     <FlatList
                         data={this.state.tripCriteria}
                         width='100%'
                         extraData={this.state.tripCriteria}
-                        keyExtractor={(x,i) => i.toString()}
+                        keyExtractor={(x, i) => i.toString()}
                         ItemSeparatorComponent={this.renderSeparator}
-                        renderItem = {({item}) => this._renderListItem(item)}
+                        renderItem={({item}) => this._renderListItem(item)}
                     />
 
                     <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton}
@@ -282,15 +432,14 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: 'bold',
     },
-    flatList:{
+    flatList: {
         marginTop: 100
     },
-    buttonText:{
+    buttonText: {
         color: 'white',
 
     },
-
-    textStyle:{
+    textStyle: {
         color: 'red',
         textAlign: 'center',
         textAlignVertical: 'center',
@@ -300,18 +449,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center'
     },
-    modalTextCategory:{
-        fontWeight:'bold',
-        alignContent:'center',
+    modalTextCategory: {
+        fontWeight: 'bold',
+        alignContent: 'center',
     },
     modalTextTripCriteria: {
-        fontWeight:'bold',
-        alignContent:'center',
+        fontWeight: 'bold',
+        alignContent: 'center',
     },
     modalHoursCategory: {
-        fontWeight:'bold',
-        alignContent:'center',
-    }
+        fontWeight: 'bold',
+        alignContent: 'center',
+    },
+    input: {
+        borderWidth: 2,
+        borderColor: 'black',
+        marginTop: 10,
+    },
 
 
 });
