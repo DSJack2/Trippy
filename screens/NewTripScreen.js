@@ -9,18 +9,22 @@ import {
     ImageBackground,
     FlatList,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Alert
 } from 'react-native';
 import {StackActions, NavigationActions,} from 'react-navigation';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
 import ModalSelector from 'react-native-modal-selector';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import Swipeout from 'react-native-swipeout'
+//import Data from '../Data/TripCategories'
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const {WIDTH, HEIGHT} = Dimensions.get('window');
+var id = 0;
 
 export default class NewTripScreen extends React.Component {
 
@@ -48,6 +52,7 @@ export default class NewTripScreen extends React.Component {
             otherVisible:false,
             submitVisible:false,
             timeVisible : false,
+            activityRowKey:null,
         };
     }
 
@@ -118,6 +123,10 @@ export default class NewTripScreen extends React.Component {
         this.setState({tripCriteria: [...this.array]})
     };
 
+    componentWillUnmount() {
+        this.state.tripCriteria.splice();
+    }
+
     _toggleModal = () => {
         this.setState({isModalVisible: !this.state.isModalVisible});
     };
@@ -176,49 +185,109 @@ export default class NewTripScreen extends React.Component {
     };
 
 
-    _renderListItem(item) {
-        console.log(item.criteriaName);
+
+    //
+    // _renderListItem(item) {
+    //     console.log(item.criteriaName);
+    //     return (
+    //         <TouchableOpacity
+    //             style={{
+    //                 backgroundColor: 'white',
+    //                 borderRadius: 3,
+    //                 borderWidth: 1,
+    //                 borderColor: 'black',
+    //                 width: WIDTH,
+    //                 height: 50
+    //             }}
+    //             onPress={() => {
+    //
+    //             }}>
+    //
+    //             <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+    //                 {item.category}: {item.criteriaName}</Text>
+    //             <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+    //                 {item.time}</Text>
+    //         </TouchableOpacity>);
+    // };
+
+    renderListItem(item,index) {
+        const swipeSettings = {
+            autoClose: true,
+            onClose: (secId, rowId, direction) => {
+                if(this.state.activityRowKey != null) {
+                    this.setState({activityRowKey: null})
+                }
+            },
+            onOpen: (secId, rowId, direction) => {
+                this.setState({activityRowKey: item.key})
+            },
+            right: [
+                {
+                    onPress: () => {
+                        Alert.alert('Alert', 'Are you sure you want to delete?',
+                            [
+                                {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                                {text: 'Yes', onPress: () => { this.deleteItemById(id)}
+                                }], {cancelable: true}
+                        );
+                    },
+                    text: 'Delete', type: 'delete'
+                }
+            ],
+            rowId: index,
+            sectionId: 1
+        };
         return (
-            <TouchableOpacity
-                style={{
-                    backgroundColor: 'white',
-                    borderRadius: 3,
-                    borderWidth: 1,
-                    borderColor: 'black',
-                    width: WIDTH,
-                    height: 50
-                }}
-                onPress={() => {
-
+            <Swipeout {...swipeSettings} >
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'column',
                 }}>
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        backgroundColor: 'white'
+                    }}>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                        }}>
 
-                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
-                    {item.category}: {item.criteriaName}</Text>
-                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
-                    {item.time}</Text>
-            </TouchableOpacity>);
+                            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                                {item.category}: {item.criteriaName}</Text>
+                            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                                {item.time}</Text>
+                        </View>
+                    </View>
+                    <View style={{
+                        height: 1,
+                        backgroundColor: 'white'
+                    }}>
+                    </View>
+                </View>
+            </Swipeout>
+        );
+    }
+
+    deleteItemById = (id) => {
+        const filteredData = this.state.tripCriteria.filter(item => item.id != id);
+        this.array = filteredData;
+        this.setState({ tripCriteria: filteredData });
+        console.log(this.state.tripCriteria)
     };
 
-    //deleteListItem(){};
-
     _addTripInfo = () => {
-        // firebase.auth().onAuthStateChanged((user) => {
-        //     if (user) {
-        //         firebase.database().ref('Trips/' + user.uid + '/').push({
-        // some trip information
-        //         }).then((data) => {
-        //             console.log('data:', data);
-        //         }).catch((error) => {
-        //             console.log('error', error);
-        //         });
-        //     }
-        // });
+        id++;
         this.array.push({
             category: this.state.category,
             time: this.state.time,
             criteriaName: this.state.criteriaName,
+            id: id.toString(10)
         });
-        this.setState({tripCriteria: [...this.array]});
+        this.setState({tripCriteria: [...this.array]},
+        function(){
+           console.log(this.state.tripCriteria);
+        } );
         this.setState({hidden: false});
         this.setState({isModalVisible: false});
         this.setState({foodVisible: false});
@@ -229,6 +298,7 @@ export default class NewTripScreen extends React.Component {
         this.setState({otherVisible: false});
         this.setState({timeVisible: false});
         this.setState({submitVisible: false});
+        this.setState({category: ''});
     };
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -240,14 +310,15 @@ export default class NewTripScreen extends React.Component {
     ;
 
     _handleDatePicked = (date) => {
-        var x = this.parseDate(date);
+        var x = this.formatTime(date);
         this.setState({time: x});
         this._hideDateTimePicker();
     };
 
-    //converts date to hrs:minutes time period format
-    parseDate = (date) => {
-        var hrs = date.getHours() % 12;
+    //converts time to hrs:minutes tim e period format
+    formatTime = (date) => {
+        console.log
+        var hrs = date.getHours();
         var timePeriod = "AM";
         if (hrs >= 12) {
             hrs = hrs - 12;
@@ -258,6 +329,9 @@ export default class NewTripScreen extends React.Component {
             timePeriod = "PM"
         }
         var min = date.getMinutes();
+        if(min < 10){
+            min = "0" + min;
+        }
         var str = "" + hrs + ":" + min + " " + timePeriod;
         return str;
     };
@@ -390,7 +464,7 @@ export default class NewTripScreen extends React.Component {
                         extraData={this.state.tripCriteria}
                         keyExtractor={(x, i) => i.toString()}
                         ItemSeparatorComponent={this.renderSeparator}
-                        renderItem={({item}) => this._renderListItem(item)}
+                        renderItem={({item,index}) => this.renderListItem(item,index)}
                     />
 
                     <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton}
