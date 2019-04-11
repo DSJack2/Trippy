@@ -65,6 +65,7 @@ export default class MapScreen extends React.Component {
                     <MapViewDirections apikey={constants.GAPIKEY}
                     origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
                     destination={{latitude: this.state.endLat, longitude: this.state.endLng}}
+                    stops={{}}
                     strokeWidth={3}
                     strokeColor='#4a89f3'
                     lineJoin='round'
