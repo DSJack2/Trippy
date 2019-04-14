@@ -70,7 +70,8 @@ export default class NewTripScreen extends React.Component {
                     height: 1,
                     width: "86%",
                     backgroundColor: "#CED0CE",
-                    marginLeft: "14%"
+                    marginLeft: "14%",
+                    marginTop: 10
                 }}
             />
         );
