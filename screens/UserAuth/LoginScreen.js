@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
@@ -21,7 +23,7 @@ export default class LoginScreen extends React.Component {
                 Alert.alert(error.message);
             });
 
-        
+
     }
 
     onCreateAccountPress = () => {
@@ -49,30 +51,42 @@ export default class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ paddingTop: 50, alignItems: 'center' }}>
+            <View style={{ paddingTop: 50, alignItems: 'center', flex: 1}}>
 
                 <Text>Login Screen</Text>
-                <TextInput style={{ width: 200, height: 40, borderWidth: 1, borderRadius: 2 }}
+                <Input style={{ width: 100, height: 40}}
                     value={this.state.email}
                     onChangeText={(text) => { this.setState({ email: text }) }}
-                    placeholder='Email'
+                    placeholder='Email Address'
                     keyboardType='email-address'
                     autoCapitalize='none'
                     autoCorrect={false}
+                    leftIcon={
+                        <Icon 
+                            name='envelope-o'
+                            size={20}
+                            style={{marginRight: 5}}/>
+                    }
                 />
 
                 <View style={{ paddingTop: 15 }} />
 
-                <TextInput style={{ width: 200, height: 40, borderWidth: 1, borderRadius: 2 }}
+                <Input style={{ width: 100, height: 40}}
                     value={this.state.password}
                     onChangeText={(text) => { this.setState({ password: text }) }}
                     placeholder='Password'
                     secureTextEntry={true}
+                    leftIcon={
+                        <Icon 
+                            name='lock'
+                            size={20}
+                            style={{marginRight: 5}}/>
+                    }
                 />
 
                 <Button title='Login' onPress={this.onLoginPress} />
                 <Button title='Create Account' onPress={this.onCreateAccountPress} />
-                <Button title='Forgot Password' onPress={this.onForgotPasswordPress} />
+                <Button title='Forgot Password' color='red' onPress={this.onForgotPasswordPress} />
 
             </View>
         );
