@@ -61,7 +61,6 @@ export default class MapScreen extends React.Component {
 
 
     render() {
-       // this.setMarkers();
         return (
             <View style={styles.container}>
                 <MapView
@@ -76,7 +75,6 @@ export default class MapScreen extends React.Component {
                     showsUserLocation = {true}
                     rotateEnabled = {false}
                     loadingEnabled = {true}
-                    annotations ={markers}
                 >
                     <MapViewDirections apikey={constants.GAPIKEY}
                     origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
@@ -86,7 +84,7 @@ export default class MapScreen extends React.Component {
                     strokeColor='#4a89f3'
                     lineJoin='round'
                     />
-                    />
+
                     <MapView.Marker
                         coordinate={{
                             latitude: this.state.startLat,
@@ -96,7 +94,7 @@ export default class MapScreen extends React.Component {
                         title={"Origin"}
                     />
                     <MapView.Marker
-                        pinColor={"Blue"}
+                        pinColor={"blue"}
                         coordinate={{
                             latitude: initialLat,
                             longitude: initialLng,
