@@ -89,7 +89,8 @@ export default class NewTripScreen extends React.Component {
                     params: {
                         origin: navigation.getParam('origin', ''),
                         destination: navigation.getParam('destination', ''),
-                        tripInfo: navigation.getParam('tripCriteria', '')
+                        tripInfo: navigation.getParam('tripCriteria', ''),
+                        tripCriteria: this.state.tripCriteria
                     }
                 })
             ],

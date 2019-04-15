@@ -28,6 +28,7 @@ export default class MapScreen extends React.Component {
             startLng: 0,
             endLat: 0,
             endLng: 0,
+            criteriaArray: []
         }
         this.setMarkers();
 
@@ -41,6 +42,7 @@ export default class MapScreen extends React.Component {
         const origin = navigation.getParam('origin', 'Not a Valid Address');
         const destination = navigation.getParam('destination', 'Not a Valid Address');
         const blah = navigation.getParam('tripCriteria', '');
+        this.state.criteriaArray = navigation.getParam('tripCriteria', '');
         console.log(blah);
         Geocoder.init(constants.GAPIKEY);
         Geocoder.from(JSON.stringify(origin))
@@ -79,9 +81,9 @@ export default class MapScreen extends React.Component {
                 >
                     <MapViewDirections apikey={constants.GAPIKEY}
                     origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
-                                       waypoints={[{latitude: initialLat, longitude:initialLng}]}
                     destination={{latitude: this.state.endLat, longitude: this.state.endLng}}
                     strokeWidth={3}
+                    tripCriteria={this.state.criteriaArray}
                     strokeColor='#4a89f3'
                     lineJoin='round'
                     />
