@@ -290,16 +290,7 @@ export default class NewTripScreen extends React.Component {
         function(){
            console.log(this.state.tripCriteria);
         } );
-        this.setState({hidden: false});
-        this.setState({isModalVisible: false});
-        this.setState({foodVisible: false});
-        this.setState({gasStationVisible: false});
-        this.setState({hotelVisible: false});
-        this.setState({attractionsVisible: false});
-        this.setState({restStopVisible: false});
-        this.setState({otherVisible: false});
-        this.setState({timeVisible: false});
-        this.setState({submitVisible: false});
+        this.setFalse();
         this.setState({category: ''});
     };
 
@@ -337,6 +328,19 @@ export default class NewTripScreen extends React.Component {
         var str = "" + hrs + ":" + min + " " + timePeriod;
         return str;
     };
+
+    setFalse = () => {
+        this.setState({
+            isModalVisible: false,
+            foodVisible: false,
+            gasStationVisible: false,
+            hotelVisible: false,
+            attractionsVisible: false,
+            restStopVisible: false,
+            otherVisible: false,
+            timeVisible: false,
+            submitVisible: false
+        })};
 
     render() {
         let index = 0;
@@ -411,7 +415,7 @@ export default class NewTripScreen extends React.Component {
 
                     <Modal isVisible={this.state.isModalVisible}
                            animationIn='bounceIn'
-                           onBackdropPress={() => this.setState({isModalVisible: false})}
+                           onBackdropPress={() => this.setFalse()}
                     >
                         <View style={{
                             flex: 0.5,
