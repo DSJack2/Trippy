@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { TextInput } from 'react-native-gesture-handler';
-import { ImageBackground, StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { ImageBackground, StyleSheet, View, Button } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {GAPIKEY} from "../constants/ApiKeys"

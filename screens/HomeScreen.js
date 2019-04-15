@@ -31,11 +31,14 @@ export default class HomeScreen extends React.Component {
         <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
           <View>
 
-            <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('TripSelect')} />
+            <Button buttonStyle={styles.button} style={styles.newTripButton} title="Create New Trip" onPress={() => this.props.navigation.navigate('TripSelect')}>
 
-            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('PreviousTrip')} />
+            </Button>
 
-            <Button style={styles.logoutButton} title='Logout' onPress={this.onLogoutPress} />
+            <Button style={styles.previousTripsButton} title="Previous Trips" onPress={() => this.props.navigation.navigate('PreviousTrip')}>
+            </Button>
+
+            <Button style={styles.logoutButton} title='Logout' onPress={this.onLogoutPress}/>
           </View>
         </ImageBackground>
       </View>
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center'
   },
-  ImageBackgroundContainer: {
+  ImageBackgroundContainer:{
     height: '100%',
     width: '100%',
     justifyContent: 'center'

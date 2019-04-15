@@ -7,8 +7,17 @@ import Geocoder from 'react-native-geocoding';
 import * as constants from '../constants/ApiKeys';
 import MapViewDirections from 'react-native-maps-directions'
 
-const initialLat = 39.8283;
+const initialLat= 39.8283;
 const initialLng = -98.5795;
+
+var markers = [
+    {
+        latitude: 45.65,
+        longitude: -78.90,
+        title: 'Foo Place',
+        subtitle: '1234 Foo Drive'
+    }
+];
 
 export default class MapScreen extends React.Component {
 
@@ -19,18 +28,20 @@ export default class MapScreen extends React.Component {
             startLng: 0,
             endLat: 0,
             endLng: 0,
-            criteriaArray: []
         }
         this.setMarkers();
+
     }
+
+
 
 
     setMarkers() {
         const { navigation } = this.props;
         const origin = navigation.getParam('origin', 'Not a Valid Address');
         const destination = navigation.getParam('destination', 'Not a Valid Address');
-        // this.setState({ 'criteriaArray' : navigation.getParam('tripCriteria', '')});
-        this.state.criteriaArray = navigation.getParam('tripCriteria', '');
+        const blah = navigation.getParam('tripCriteria', '');
+        console.log(blah);
         Geocoder.init(constants.GAPIKEY);
         Geocoder.from(JSON.stringify(origin))
             .then(json => {
@@ -49,13 +60,12 @@ export default class MapScreen extends React.Component {
 
 
 
-
     render() {
         const { navigation } = this.props;
         return (
             <View style={styles.container}>
                 <MapView
-                    style={{ flex: 1, zIndex: -1 }}
+                    style={{ flex: 1, zIndex: -1}}
                     provider="google"
                     initialRegion={{
                         latitude: initialLat,
@@ -63,24 +73,37 @@ export default class MapScreen extends React.Component {
                         latitudeDelta: 35,
                         longitudeDelta: 35,
                     }}
-                    showsUserLocation={true}
-                    rotateEnabled={false}
-                    loadingEnabled={true}>
+                    showsUserLocation = {true}
+                    rotateEnabled = {false}
+                    loadingEnabled = {true}
+                >
                     <MapViewDirections apikey={constants.GAPIKEY}
-                        origin={{ latitude: this.state.startLat, longitude: this.state.startLng }}
-                        destination={{ latitude: this.state.endLat, longitude: this.state.endLng }}
-                        strokeWidth={3}
-                        strokeColor='#4a89f3'
-                        tripCriteria={this.state.criteriaArray}
-                        lineJoin='round'
+                    origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
+                                       waypoints={[{latitude: initialLat, longitude:initialLng}]}
+                    destination={{latitude: this.state.endLat, longitude: this.state.endLng}}
+                    strokeWidth={3}
+                    strokeColor='#4a89f3'
+                    lineJoin='round'
                     />
+
                     <MapView.Marker
                         coordinate={{
                             latitude: this.state.startLat,
                             longitude: this.state.startLng,
                         }}
+
                         title={"Origin"}
                     />
+                    <MapView.Marker
+                        pinColor={"blue"}
+                        coordinate={{
+                            latitude: initialLat,
+                            longitude: initialLng,
+                        }}
+
+                        title={"Blah"}
+                    />
+
                     <MapView.Marker
                         coordinate={{
                             latitude: this.state.endLat,
