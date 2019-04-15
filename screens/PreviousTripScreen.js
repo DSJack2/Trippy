@@ -5,6 +5,7 @@ import Modal from "react-native-modal";
 import * as firebase from 'firebase';
 import { Button, colors } from 'react-native-elements';
 const{WIDTH,HEIGHT}  =  Dimensions.get('window');
+console.disableYellowBox = true;
 
 export default class NewTripScreen extends React.Component {
 
@@ -22,10 +23,13 @@ export default class NewTripScreen extends React.Component {
             previousTripsVisible: true,
             isModalVisible: false,
         };
+
     }
 
     componentDidMount(){
         this.getUserTrips();
+        // this.setState({origin: this.state.origin});
+        // this.setState({destination: this.state.destination});
         // const user = firebase.auth().currentUser;
         // this.setState({
         //     currentUser: user
@@ -35,7 +39,6 @@ export default class NewTripScreen extends React.Component {
     getUserTrips = () => {
         let tripArray = [];
         let trips = firebase.database().ref(`Trips/` + this.state.currentUser.uid);
-        //console.log(trips);
         trips.on('value', (snapshot) => {
             snapshot.forEach((child) => {
                 //console.log(child);
@@ -47,14 +50,22 @@ export default class NewTripScreen extends React.Component {
         //console.log(typeof this.state.data)
     };
 
-    navigateToMap = () => {
-        const { navigation } = this.props;
+    navigateToNewTrip = () => {
+        this.setState({isModalVisible: false});
+        const x = this.state.origin;
+        const y = this.state.destination;
+        const {navigation} = this.props;
         var navActions = StackActions.reset({
             index: 0,
             actions: [
                 NavigationActions.navigate({
-                    routeName: 'Map',
-                    params: { origin: navigation.getParam('origin', ''), destination: navigation.getParam('destination', '') }
+                    routeName: 'NewTrip',
+                    params: {
+                        origin: navigation.getParam('origin', x),
+                        destination: navigation.getParam('destination', y),
+                        //tripInfo: navigation.getParam('tripCriteria', '')
+                        //tripInfo: navigation.getParam('tripName','');
+                    }
                 })
             ],
 
@@ -78,15 +89,17 @@ export default class NewTripScreen extends React.Component {
     };
 
     onStartTripPress = () => {
-
+        this.navigateToMap();
     };
+
 
 
     _renderListItem(item) {
         var x = JSON.stringify(item);
         var y = JSON.parse(x);
-        let start = y['origin'];
-        let end = y['desination'];
+        var start = y['origin'];
+        var end = y['desination'];
+        var name = y['tripName'];
         return (
             <TouchableOpacity
                 style={{
@@ -95,13 +108,13 @@ export default class NewTripScreen extends React.Component {
                     borderWidth: 1,
                     borderColor: 'black',
                     width: WIDTH,
-                    height: 50
+                    height: 85
                 }}
                 onPress={() => {
-                    this._toggleModal();
-                    this.setState({origin: item.start, destination: item.end});
-
+                    this.setState({origin: start, destination: end});
+                     this._toggleModal();
                 }}>
+                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center',fontWeight:'bold'}}> {this.state.tripName} </Text>
                 <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
                     {start}</Text>
                 <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center',fontWeight:'bold'}}>
@@ -120,6 +133,8 @@ export default class NewTripScreen extends React.Component {
         return (
             <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
                 {/*<Button title="Click to get Previous Trips" onPress={this.getUserTrips}/>*/}
+                <Text style={{color: 'red', textAlign: 'center', textAlignVertical: 'center',fontWeight:'bold',fontSize: 25}}>
+                    PREVIOUS TRIPS{"\n"}</Text>
                 <FlatList
                     data={this.state.data}
                     width='100%'
@@ -138,8 +153,11 @@ export default class NewTripScreen extends React.Component {
                         alignItems: 'center',
                         backgroundColor: 'white',
                     }}>
-                        <Text>{this.state.origin} </Text>
-                        <Button onPress={this.onStartTripPress}
+
+                        <Text>Origin: {this.state.origin}{"\n"}{"\n"}
+                        </Text>
+                        <Text>Destination: {this.state.destination} </Text>
+                        <Button onPress={this.navigateToNewTrip.bind(this)}
                                 color='red' title="Create Trip">
                         </Button>
                     </View>
