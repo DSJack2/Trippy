@@ -12,7 +12,7 @@ import {
     Alert
 } from 'react-native';
 import { StackActions, NavigationActions, } from 'react-navigation';
-import {Button} from 'react-native-elements';
+import {Button, Input} from 'react-native-elements';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
 import ModalSelector from 'react-native-modal-selector';
@@ -289,7 +289,7 @@ export default class NewTripScreen extends React.Component {
         });
         this.setState({ tripCriteria: [...this.array] },
             function () {
-                console.log(this.state.tripCriteria);
+                // console.log(this.state.tripCriteria);
             });
         this.setState({ hidden: false });
         this.setState({ isModalVisible: false });
@@ -439,7 +439,7 @@ export default class NewTripScreen extends React.Component {
                                 style={styles.modalSecondaryCategory}
                                 onChange={(option) => this.setState({ criteriaName: option.label })} /> : null}
                             {this.state.otherVisible ?
-                                <TextInput
+                                <Input
                                     style={styles.input}
                                     placeholder="Category"
                                     defaultValue={''}

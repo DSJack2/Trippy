@@ -52,7 +52,6 @@ export default class MapScreen extends React.Component {
 
     render() {
         const { navigation } = this.props;
-        // console.log(this.props.navigation.state);
         return (
             <View style={styles.container}>
                 <MapView
