@@ -5,7 +5,6 @@ import {
     ScrollView,
     Text,
     TextInput,
-    Button,
     ImageBackground,
     FlatList,
     TouchableOpacity,
@@ -36,7 +35,7 @@ export default class NewTripScreen extends React.Component {
             origin: '',
             destination: '',
             dailyDriveTime: '',
-            tripName: 'New Trip',
+            tripName: '',
             numberOfDrivers: '1',
             scenic: false,
             tripCriteria: [],
@@ -113,7 +112,8 @@ export default class NewTripScreen extends React.Component {
                     height: 1,
                     width: "86%",
                     backgroundColor: "#CED0CE",
-                    marginLeft: "14%"
+                    marginLeft: "14%",
+                    marginTop: 5
                 }}
             />
         );
@@ -387,7 +387,7 @@ export default class NewTripScreen extends React.Component {
                                value={this.state.tripName}
                                editable={true}/>
 
-                    <Text style={styles.textInputText}>Daily Drive Time</Text>
+                    <Text style={styles.textInputText}>Daily Drive Time(hrs)</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => {
                         this.setState({dailyDriveTime: text})
                     }}
@@ -401,9 +401,9 @@ export default class NewTripScreen extends React.Component {
                                value={this.state.numberOfDrivers}
                                editable={true}/>
 
-                    <Button title='Add Trip Criteria' color='red' onPress={this._toggleModal} style={styles.button}
-                            position='center'>
-                    </Button>
+                    <Button title='Add Trip Criteria' color='red' onPress={this._toggleModal} style={styles.newTripButton}
+                            position='center'/>
+                    
 
 
 
@@ -425,14 +425,17 @@ export default class NewTripScreen extends React.Component {
                                 onChange={(option) => this.setCriteria(option)}/>
                             {this.state.foodVisible ? <ModalSelector
                                 data={food}
-                                initValue="Food Genre"
+                                style={{marginTop: 5}}
+                                initValue="Food Type"
                                 onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
                             {this.state.attractionsVisible ? <ModalSelector
                                 data={attractions}
+                                style={{marginTop: 5}}
                                 initValue="Attractions"
                             onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
                             {this.state.hotelVisible ? <ModalSelector
                                 data={hotels}
+                                style={{marginTop: 5}}
                                 initValue="Hotels"
                                 onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
                             {this.state.otherVisible ?
@@ -443,7 +446,7 @@ export default class NewTripScreen extends React.Component {
                                     onChangeText={(text) => this.setState({category: text})} />
                                      : null}
                             {this.state.timeVisible ?<TouchableOpacity onPress={this._showDateTimePicker}>
-                                <Text style = {{color: 'green'}}>Pick a Time</Text>
+                                <Text style = {{color: 'green', marginTop: 5}}>Pick a Time</Text>
                             </TouchableOpacity> : null }
 
                             <DateTimePicker
@@ -454,7 +457,7 @@ export default class NewTripScreen extends React.Component {
                                 onCancel={this._hideDateTimePicker}
                             />
                             {this.state.submitVisible ? <TouchableOpacity onPress={this._addTripInfo} style ={{marginTop: 50}}>
-                                <Text style={{color: 'red'}}>Submit</Text>
+                                <Text style={{color: 'blue'}}>Add</Text>
                             </TouchableOpacity>:null}
                         </View>
                     </Modal>
@@ -464,6 +467,7 @@ export default class NewTripScreen extends React.Component {
                         width='100%'
                         extraData={this.state.tripCriteria}
                         keyExtractor={(x, i) => i.toString()}
+                        style = {{marginTop: 10}}
                         ItemSeparatorComponent={this.renderSeparator}
                         renderItem={({item,index}) => this.renderListItem(item,index)}
                     />
@@ -497,7 +501,8 @@ const styles = StyleSheet.create({
     newTripButton: {
         textAlign: 'center',
         alignSelf: 'center',
-        width: 200
+        width: 200,
+        marginTop: 10
     },
 
     textInputText: {

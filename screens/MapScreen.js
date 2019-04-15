@@ -10,14 +10,14 @@ import MapViewDirections from 'react-native-maps-directions'
 const initialLat= 39.8283;
 const initialLng = -98.5795;
 
-var markers = [
-    {
-        latitude: 45.65,
-        longitude: -78.90,
-        title: 'Foo Place',
-        subtitle: '1234 Foo Drive'
-    }
-];
+// var markers = [
+//     {
+//         latitude: 45.65,
+//         longitude: -78.90,
+//         title: 'Foo Place',
+//         subtitle: '1234 Foo Drive'
+//     }
+// ];
 
 export default class MapScreen extends React.Component {
 
@@ -93,15 +93,6 @@ export default class MapScreen extends React.Component {
                         }}
 
                         title={"Origin"}
-                    />
-                    <MapView.Marker
-                        pinColor={"blue"}
-                        coordinate={{
-                            latitude: initialLat,
-                            longitude: initialLng,
-                        }}
-
-                        title={"Blah"}
                     />
 
                     <MapView.Marker

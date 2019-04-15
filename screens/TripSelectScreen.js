@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { TextInput } from 'react-native-gesture-handler';
-import { ImageBackground, StyleSheet, View, Button } from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import {GAPIKEY} from "../constants/ApiKeys"
+import { GAPIKEY } from "../constants/ApiKeys"
 
 export default class TripSelectScreen extends React.Component {
     constructor(props) {
@@ -23,9 +24,9 @@ export default class TripSelectScreen extends React.Component {
         var navActions = StackActions.reset({
             index: 0,
             actions: [
-                NavigationActions.navigate({ 
-                    routeName: 'NewTrip', 
-                    params: { origin: this.state.startAddress, destination: this.state.destinationAddress } 
+                NavigationActions.navigate({
+                    routeName: 'NewTrip',
+                    params: { origin: this.state.startAddress, destination: this.state.destinationAddress }
                 })
             ],
 
@@ -129,7 +130,7 @@ export default class TripSelectScreen extends React.Component {
                         debounce={200}
                     />
                     <Button style={styles.startTripButton} buttonStyle={styles.button} title="Next"
-                        onPress={() => this.props.navigation.navigate('NewTrip', {origin: this.state.startAddress, destination: this.state.destinationAddress})} />
+                        onPress={() => this.props.navigation.navigate('NewTrip', { origin: this.state.startAddress, destination: this.state.destinationAddress })} />
 
                 </ImageBackground>
             </View>

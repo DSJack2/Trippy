@@ -17,7 +17,7 @@ export default class NewTripScreen extends React.Component {
             origin: '',
             destination: '',
             dailyDriveTime: '',
-            tripName: 'New Trip',
+            tripName: '',
             numberOfDrivers: '',
             scenic: false,
             previousTripsVisible: true,
@@ -64,7 +64,7 @@ export default class NewTripScreen extends React.Component {
                         origin: navigation.getParam('origin', x),
                         destination: navigation.getParam('destination', y),
                         //tripInfo: navigation.getParam('tripCriteria', '')
-                        //tripInfo: navigation.getParam('tripName','');
+                        tripInfo: navigation.getParam('tripName','')
                     }
                 })
             ],
@@ -111,10 +111,10 @@ export default class NewTripScreen extends React.Component {
                     height: 85
                 }}
                 onPress={() => {
-                    this.setState({origin: start, destination: end});
+                    this.setState({origin: start, destination: end, tripName: name});
                      this._toggleModal();
                 }}>
-                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center',fontWeight:'bold'}}> {this.state.tripName} </Text>
+                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center', fontWeight:'bold'}}> {this.state.tripName} </Text>
                 <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
                     {start}</Text>
                 <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center',fontWeight:'bold'}}>
@@ -157,9 +157,7 @@ export default class NewTripScreen extends React.Component {
                         <Text>Origin: {this.state.origin}{"\n"}{"\n"}
                         </Text>
                         <Text>Destination: {this.state.destination} </Text>
-                        <Button onPress={this.navigateToNewTrip.bind(this)}
-                                color='red' title="Create Trip">
-                        </Button>
+                        <Button onPress={this.navigateToNewTrip.bind(this)} style={{marginTop: 5}} title="Go To Trip"/>
                     </View>
                 </Modal>
             </ImageBackground>
