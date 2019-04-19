@@ -12,7 +12,7 @@ import {
     Alert
 } from 'react-native';
 import { StackActions, NavigationActions, } from 'react-navigation';
-import {Button, Input} from 'react-native-elements';
+import { Button, Input } from 'react-native-elements';
 import * as firebase from 'firebase';
 import Modal from "react-native-modal";
 import ModalSelector from 'react-native-modal-selector';
@@ -23,7 +23,7 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-const {WIDTH, HEIGHT} = Dimensions.get('window');
+const { WIDTH, HEIGHT } = Dimensions.get('window');
 var id = 0;
 
 export default class NewTripScreen extends React.Component {
@@ -41,7 +41,7 @@ export default class NewTripScreen extends React.Component {
             tripCriteria: [],
             category: '', // category of trip param/criteria
             criteriaName: '',//criteria name
-            time: '',
+            time: null,
             isModalVisible: false,
             foodVisible: false,
             gasStationVisible: false,
@@ -49,15 +49,15 @@ export default class NewTripScreen extends React.Component {
             attractionsVisible: false,
             hotelVisible: false,
             isDateTimePickerVisible: false,
-            otherVisible:false,
-            submitVisible:false,
-            timeVisible : false,
-            activityRowKey:null,
+            otherVisible: false,
+            submitVisible: false,
+            timeVisible: false,
+            activityRowKey: null,
         };
     }
 
     writeNewTrip = () => {
-        const {navigation} = this.props;
+        const { navigation } = this.props;
         let fbOrigin = navigation.getParam('origin', '');
         let fbDestination = navigation.getParam('destination', '');
 
@@ -71,7 +71,7 @@ export default class NewTripScreen extends React.Component {
                     numberOfDrivers: this.state.numberOfDrivers,
                     scenic: false
                 }).then((data) => {
-                    console.log('data:', data);
+                    // console.log('data:', data);
                 }).catch((error) => {
                     console.log('error', error);
                 });
@@ -80,7 +80,7 @@ export default class NewTripScreen extends React.Component {
     };
 
     navigateToMap = () => {
-        const {navigation} = this.props;
+        const { navigation } = this.props;
         var navActions = StackActions.reset({
             index: 0,
             actions: [
@@ -101,8 +101,8 @@ export default class NewTripScreen extends React.Component {
     };
 
     onStartTripPress = () => {
-            this.writeNewTrip();
-            this.navigateToMap();
+        this.writeNewTrip();
+        this.navigateToMap();
     };
 
 
@@ -122,7 +122,7 @@ export default class NewTripScreen extends React.Component {
 
 
     componentDidMount() {
-        this.setState({tripCriteria: [...this.array]})
+        this.setState({ tripCriteria: [...this.array] })
     };
 
     componentWillUnmount() {
@@ -130,59 +130,59 @@ export default class NewTripScreen extends React.Component {
     }
 
     _toggleModal = () => {
-        this.setState({isModalVisible: !this.state.isModalVisible});
+        this.setState({ isModalVisible: !this.state.isModalVisible });
     };
 
     setCriteria = (option) => {
 
         if (option.label == "Food") {
             this.state.category = "Food";
-            this.setState({foodVisible: true});
-            this.setState({gasStationVisible: false});
-            this.setState({hotelVisible: false});
-            this.setState({attractionsVisible: false});
-            this.setState({restStopVisible: false});
-            this.setState({otherVisible: false});
+            this.setState({ foodVisible: true });
+            this.setState({ gasStationVisible: false });
+            this.setState({ hotelVisible: false });
+            this.setState({ attractionsVisible: false });
+            this.setState({ restStopVisible: false });
+            this.setState({ otherVisible: false });
         } else if (option.label == "Gas Station") {
             this.state.category = "Gas Station";
-            this.setState({foodVisible: false});
-            this.setState({gasStationVisible: true});
-            this.setState({hotelVisible: false});
-            this.setState({attractionsVisible: false});
-            this.setState({restStopVisible: false});
-            this.setState({otherVisible: false});
+            this.setState({ foodVisible: false });
+            this.setState({ gasStationVisible: true });
+            this.setState({ hotelVisible: false });
+            this.setState({ attractionsVisible: false });
+            this.setState({ restStopVisible: false });
+            this.setState({ otherVisible: false });
         } else if (option.label == "Attractions") {
             this.state.category = "Attractions";
-            this.setState({foodVisible: false});
-            this.setState({gasStationVisible: false});
-            this.setState({hotelVisible: false});
-            this.setState({attractionsVisible: true});
-            this.setState({restStopVisible: false});
-            this.setState({otherVisible: false});
+            this.setState({ foodVisible: false });
+            this.setState({ gasStationVisible: false });
+            this.setState({ hotelVisible: false });
+            this.setState({ attractionsVisible: true });
+            this.setState({ restStopVisible: false });
+            this.setState({ otherVisible: false });
         } else if (option.label == "Hotels") {
             this.state.category = "Hotels";
-            this.setState({foodVisible: false});
-            this.setState({gasStationVisible: false});
-            this.setState({hotelVisible: true});
-            this.setState({attractionsVisible: false});
-            this.setState({restStopVisible: false});
-            this.setState({otherVisible: false});
+            this.setState({ foodVisible: false });
+            this.setState({ gasStationVisible: false });
+            this.setState({ hotelVisible: true });
+            this.setState({ attractionsVisible: false });
+            this.setState({ restStopVisible: false });
+            this.setState({ otherVisible: false });
         } else if (option.label == "Rest Stops") {
             this.state.category = "Rest Stops";
-            this.setState({foodVisible: false});
-            this.setState({gasStationVisible: false});
-            this.setState({hotelVisible: false});
-            this.setState({attractionsVisible: false});
-            this.setState({restStopVisible: true});
-            this.setState({otherVisible: false});
-        }else if(option.label == "Other"){
-            this.setState({foodVisible: false});
-            this.setState({gasStationVisible: false});
-            this.setState({hotelVisible: false});
-            this.setState({attractionsVisible: false});
-            this.setState({restStopVisible: false});
-            this.setState({otherVisible: true});
-        } this.setState({timeVisible: true});
+            this.setState({ foodVisible: false });
+            this.setState({ gasStationVisible: false });
+            this.setState({ hotelVisible: false });
+            this.setState({ attractionsVisible: false });
+            this.setState({ restStopVisible: true });
+            this.setState({ otherVisible: false });
+        } else if (option.label == "Other") {
+            this.setState({ foodVisible: false });
+            this.setState({ gasStationVisible: false });
+            this.setState({ hotelVisible: false });
+            this.setState({ attractionsVisible: false });
+            this.setState({ restStopVisible: false });
+            this.setState({ otherVisible: true });
+        } this.setState({ timeVisible: true });
 
     };
 
@@ -212,25 +212,26 @@ export default class NewTripScreen extends React.Component {
     //         </TouchableOpacity>);
     // };
 
-    renderListItem(item,index) {
+    renderListItem(item, index) {
         const swipeSettings = {
             autoClose: true,
             onClose: (secId, rowId, direction) => {
-                if(this.state.activityRowKey != null) {
-                    this.setState({activityRowKey: null})
+                if (this.state.activityRowKey != null) {
+                    this.setState({ activityRowKey: null })
                 }
             },
             onOpen: (secId, rowId, direction) => {
-                this.setState({activityRowKey: item.key})
+                this.setState({ activityRowKey: item.key })
             },
             right: [
                 {
                     onPress: () => {
                         Alert.alert('Alert', 'Are you sure you want to delete?',
                             [
-                                {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                {text: 'Yes', onPress: () => { this.deleteItemById(id)}
-                                }], {cancelable: true}
+                                { text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                                {
+                                    text: 'Yes', onPress: () => { this.deleteItemById(id) }
+                                }], { cancelable: true }
                         );
                     },
                     text: 'Delete', type: 'delete'
@@ -255,10 +256,10 @@ export default class NewTripScreen extends React.Component {
                             flexDirection: 'column',
                         }}>
 
-                            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
+                            <Text style={{ color: 'black', textAlign: 'center', textAlignVertical: 'center' }}>
                                 {item.category}: {item.criteriaName}</Text>
-                            <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
-                                {item.time}</Text>
+                            <Text style={{ color: 'black', textAlign: 'center', textAlignVertical: 'center' }}>
+                                {item.time.toLocaleTimeString()}</Text>
                         </View>
                     </View>
                     <View style={{
@@ -286,40 +287,39 @@ export default class NewTripScreen extends React.Component {
             criteriaName: this.state.criteriaName,
             id: id.toString(10)
         });
-        this.setState({tripCriteria: [...this.array]},
-        function(){
-           console.log(this.state.tripCriteria);
-        } );
-        this.setState({hidden: false});
-        this.setState({isModalVisible: false});
-        this.setState({foodVisible: false});
-        this.setState({gasStationVisible: false});
-        this.setState({hotelVisible: false});
-        this.setState({attractionsVisible: false});
-        this.setState({restStopVisible: false});
-        this.setState({otherVisible: false});
-        this.setState({timeVisible: false});
-        this.setState({submitVisible: false});
-        this.setState({category: ''});
+        this.setState({ tripCriteria: [...this.array] },
+            function () {
+                // console.log(this.state.tripCriteria);
+            });
+        this.setState({ hidden: false });
+        this.setState({ isModalVisible: false });
+        this.setState({ foodVisible: false });
+        this.setState({ gasStationVisible: false });
+        this.setState({ hotelVisible: false });
+        this.setState({ attractionsVisible: false });
+        this.setState({ restStopVisible: false });
+        this.setState({ otherVisible: false });
+        this.setState({ timeVisible: false });
+        this.setState({ submitVisible: false });
+        this.setState({ category: '' });
     };
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
     _hideDateTimePicker = () => {
-        this.setState({isDateTimePickerVisible: false});
-        this.setState({submitVisible: true});
+        this.setState({ isDateTimePickerVisible: false });
+        this.setState({ submitVisible: true });
     }
-    ;
+        ;
 
     _handleDatePicked = (date) => {
-        var x = this.formatTime(date);
-        this.setState({time: x});
+        this.setState({ time: date });
         this._hideDateTimePicker();
     };
 
-    //converts time to hrs:minutes tim e period format
+    //converts time to hrs:minutes time period format
     formatTime = (date) => {
-        console.log
+        console.log(date);
         var hrs = date.getHours();
         var timePeriod = "AM";
         if (hrs >= 12) {
@@ -331,7 +331,7 @@ export default class NewTripScreen extends React.Component {
             timePeriod = "PM"
         }
         var min = date.getMinutes();
-        if(min < 10){
+        if (min < 10) {
             min = "0" + min;
         }
         var str = "" + hrs + ":" + min + " " + timePeriod;
@@ -341,77 +341,77 @@ export default class NewTripScreen extends React.Component {
     render() {
         let index = 0;
         const data = [
-            {key: index++, section: true, label: 'Categories'},
-            {key: index++, label: 'Food'},
-            {key: index++, label: 'Gas Station'},
-            {key: index++, label: 'Attractions',},
-            {key: index++, label: 'Hotels'},
-            {key: index++, label: 'Rest Stops'},
-            {key: index++, label: 'Other'}
+            { key: index++, section: true, label: 'Categories' },
+            { key: index++, label: 'Food' },
+            { key: index++, label: 'Gas Station' },
+            { key: index++, label: 'Attractions', },
+            { key: index++, label: 'Hotels' },
+            { key: index++, label: 'Rest Stops' },
+            { key: index++, label: 'Other' }
         ];
         const food = [
-            {key: index++, section: true, label: 'Food Genre'},
-            {key: index++, label: 'American'},
-            {key: index++, label: 'Chinese'},
-            {key: index++, label: 'Italian',},
-            {key: index++, label: 'Greek'},
-            {key: index++, label: 'Mexican'},
-            {key: index++, label: 'Fast Food'},
-            {key: index++, label: 'Thai'},
-            {key: index++, label: 'Japanese',},
-            {key: index++, label: 'Indian'},
-            {key: index++, label: 'Vietnamese'}
+            { key: index++, section: true, label: 'Food Genre' },
+            { key: index++, label: 'American' },
+            { key: index++, label: 'Chinese' },
+            { key: index++, label: 'Italian', },
+            { key: index++, label: 'Greek' },
+            { key: index++, label: 'Mexican' },
+            { key: index++, label: 'Fast Food' },
+            { key: index++, label: 'Thai' },
+            { key: index++, label: 'Japanese', },
+            { key: index++, label: 'Indian' },
+            { key: index++, label: 'Vietnamese' }
         ];
         const hotels = [
-            {key: index++, section: true, label: 'Hotels'},
-            {key: index++, label: 'Cheap'},
-            {key: index++, label: 'Normal'},
-            {key: index++, label: 'Expensive'}
+            { key: index++, section: true, label: 'Hotels' },
+            { key: index++, label: 'Cheap' },
+            { key: index++, label: 'Average' },
+            { key: index++, label: 'Expensive' }
         ];
         const attractions = [
-            {key: index++, section: true, label: 'Attractions'},
-            {key: index++, label: 'Museum'},
-            {key: index++, label: 'Scenic'},
-            {key: index++, label: 'Park'},
-            {key: index++, label: 'Zoo'},
-            {key: index++, label: 'Child Friendly'},
+            { key: index++, section: true, label: 'Attractions' },
+            { key: index++, label: 'Museum' },
+            { key: index++, label: 'Scenic' },
+            { key: index++, label: 'Park' },
+            { key: index++, label: 'Zoo' },
+            { key: index++, label: 'Child Friendly' },
         ];
 
         return (
             <ImageBackground source={require('../assets/images/road-mountains.jpg')}
-                             style={styles.ImageBackgroundContainer}>
-                <ScrollView keyboardDismissMode='on-drag' ContentContainerStyle={{alignItems: 'center'}}>
+                style={styles.ImageBackgroundContainer}>
+                <ScrollView keyboardDismissMode='on-drag' ContentContainerStyle={{ alignItems: 'center' }}>
                     <Text style={styles.textInputText}>Trip Name</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => {
-                        this.setState({tripName: text})
+                        this.setState({ tripName: text })
                     }}
-                               value={this.state.tripName}
-                               editable={true}/>
+                        value={this.state.tripName}
+                        editable={true} />
 
                     <Text style={styles.textInputText}>Daily Drive Time(hrs)</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => {
-                        this.setState({dailyDriveTime: text})
+                        this.setState({ dailyDriveTime: text })
                     }}
-                               value={this.state.dailyDriveTime}
-                               editable={true}/>
+                        value={this.state.dailyDriveTime}
+                        editable={true} />
 
                     <Text style={styles.textInputText}>Number of Drivers</Text>
                     <TextInput style={styles.startLoc} onChangeText={(text) => {
-                        this.setState({numberOfDrivers: text})
+                        this.setState({ numberOfDrivers: text })
                     }}
-                               value={this.state.numberOfDrivers}
-                               editable={true}/>
+                        value={this.state.numberOfDrivers}
+                        editable={true} />
 
-                    <Button title='Add Trip Criteria' color='red' onPress={this._toggleModal} style={styles.newTripButton}
-                            position='center'/>
-                    
+                    <Button title='Add Trip Criteria' onPress={this._toggleModal} style={styles.newTripButton}
+                        position='center' />
+
 
 
 
 
                     <Modal isVisible={this.state.isModalVisible}
-                           animationIn='bounceIn'
-                           onBackdropPress={() => this.setState({isModalVisible: false})}
+                        animationIn='bounceIn'
+                        onBackdropPress={() => this.setState({ isModalVisible: false })}
                     >
                         <View style={{
                             flex: 0.5,
@@ -423,43 +423,43 @@ export default class NewTripScreen extends React.Component {
                             <ModalSelector
                                 data={data}
                                 initValue="Categories"
-                                onChange={(option) => this.setCriteria(option)}/>
+                                onChange={(option) => this.setCriteria(option)} />
                             {this.state.foodVisible ? <ModalSelector
                                 data={food}
-                                style={{marginTop: 5}}
+                                style={{ marginTop: 5 }}
                                 initValue="Food Type"
-                                onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
+                                onChange={(option) => this.setState({ criteriaName: option.label })} /> : null}
                             {this.state.attractionsVisible ? <ModalSelector
                                 data={attractions}
-                                style={{marginTop: 5}}
+                                style={{ marginTop: 5 }}
                                 initValue="Attractions"
-                            onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
+                                onChange={(option) => this.setState({ criteriaName: option.label })} /> : null}
                             {this.state.hotelVisible ? <ModalSelector
                                 data={hotels}
-                                style={{marginTop: 5}}
-                                initValue="Hotels"
-                                onChange={(option) => this.setState({criteriaName: option.label})}/> : null}
+                                style={{ marginTop: 5 }}
+                                initValue="Hotel Price"
+                                onChange={(option) => this.setState({ criteriaName: option.label })} /> : null}
                             {this.state.otherVisible ?
                                 <Input
                                     style={styles.input}
                                     placeholder="Category"
                                     defaultValue={''}
-                                    onChangeText={(text) => this.setState({category: text})} />
-                                     : null}
-                            {this.state.timeVisible ?<TouchableOpacity onPress={this._showDateTimePicker}>
-                                <Text style = {{color: 'green', marginTop: 5}}>Pick a Time</Text>
-                            </TouchableOpacity> : null }
+                                    onChangeText={(text) => this.setState({ category: text })} />
+                                : null}
+                            {this.state.timeVisible ? <TouchableOpacity onPress={this._showDateTimePicker}>
+                                <Text style={{ color: 'green', marginTop: 5 }}>Pick a Time</Text>
+                            </TouchableOpacity> : null}
 
                             <DateTimePicker
                                 titleIOS={"Choose a Time"}
-                                mode = 'time'
+                                mode='time'
                                 isVisible={this.state.isDateTimePickerVisible}
                                 onConfirm={this._handleDatePicked}
                                 onCancel={this._hideDateTimePicker}
                             />
-                            {this.state.submitVisible ? <TouchableOpacity onPress={this._addTripInfo} style ={{marginTop: 50}}>
-                                <Text style={{color: 'blue'}}>Add</Text>
-                            </TouchableOpacity>:null}
+                            {this.state.submitVisible ? <TouchableOpacity onPress={this._addTripInfo} style={{ marginTop: 50 }}>
+                                <Text style={{ color: 'blue' }}>Add</Text>
+                            </TouchableOpacity> : null}
                         </View>
                     </Modal>
 
@@ -468,13 +468,13 @@ export default class NewTripScreen extends React.Component {
                         width='100%'
                         extraData={this.state.tripCriteria}
                         keyExtractor={(x, i) => i.toString()}
-                        style = {{marginTop: 10}}
+                        style={{ marginTop: 10 }}
                         ItemSeparatorComponent={this.renderSeparator}
-                        renderItem={({item,index}) => this.renderListItem(item,index)}
+                        renderItem={({ item, index }) => this.renderListItem(item, index)}
                     />
 
                     <Button title='StartTrip' buttonStyle={styles.button} style={styles.newTripButton}
-                            onPress={this.onStartTripPress.bind(this)}/>
+                        onPress={this.onStartTripPress.bind(this)} />
 
                 </ScrollView>
             </ImageBackground>

@@ -34,16 +34,12 @@ export default class MapScreen extends React.Component {
 
     }
 
-
-
-
     setMarkers() {
         const { navigation } = this.props;
         const origin = navigation.getParam('origin', 'Not a Valid Address');
         const destination = navigation.getParam('destination', 'Not a Valid Address');
         const blah = navigation.getParam('tripCriteria', '');
         this.state.criteriaArray = navigation.getParam('tripCriteria', '');
-        console.log(blah);
         Geocoder.init(constants.GAPIKEY);
         Geocoder.from(JSON.stringify(origin))
             .then(json => {
