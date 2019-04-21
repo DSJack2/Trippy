@@ -81,10 +81,7 @@ export default class NewTripScreen extends React.Component {
 
     navigateToMap = () => {
         const {navigation} = this.props;
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
+        var navActions = StackActions.push({
                     routeName: 'Map',
                     params: {
                         origin: navigation.getParam('origin', ''),
@@ -92,11 +89,7 @@ export default class NewTripScreen extends React.Component {
                         tripInfo: navigation.getParam('tripCriteria', ''),
                         tripCriteria: this.state.tripCriteria
                     }
-                })
-            ],
-
-        });
-
+                });
         this.props.navigation.dispatch(navActions);
     };
 

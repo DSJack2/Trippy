@@ -42,9 +42,10 @@ export default class NewTripScreen extends React.Component {
         trips.on('value', (snapshot) => {
             snapshot.forEach((child) => {
                 //console.log(child);
-                tripArray.push(child);
+                tripArray.push(child);``
             });
-            this.setState({data: tripArray});
+            this.setState({data: tripArray.reverse()});
+
         });
         this.setState({previousTripVisible: false});
         //console.log(typeof this.state.data)
@@ -55,22 +56,14 @@ export default class NewTripScreen extends React.Component {
         const x = this.state.origin;
         const y = this.state.destination;
         const {navigation} = this.props;
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
+        var navActions = StackActions.push({
                     routeName: 'NewTrip',
                     params: {
                         origin: navigation.getParam('origin', x),
                         destination: navigation.getParam('destination', y),
                         //tripInfo: navigation.getParam('tripCriteria', '')
                         tripInfo: navigation.getParam('tripName','')
-                    }
-                })
-            ],
-
-        });
-
+                    }});
         this.props.navigation.dispatch(navActions);
     };
 
