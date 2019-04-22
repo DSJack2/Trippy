@@ -42,7 +42,6 @@ export default class MapScreen extends React.Component {
         this.state.criteriaArray.map((i) => {
             var time = new Date(i['tme']);
             i['time'] = time;
-            console.log(i);
         });
         Geocoder.init(constants.GAPIKEY);
         Geocoder.from(JSON.stringify(origin))
@@ -68,49 +67,54 @@ export default class MapScreen extends React.Component {
 
     render() {
         const { navigation } = this.props;
-        return (
-            <View style={styles.container}>
-                <MapView
-                    style={{ flex: 1, zIndex: -1}}
-                    provider="google"
-                    initialRegion={{
-                        latitude: initialLat,
-                        longitude: initialLng,
-                        latitudeDelta: 35,
-                        longitudeDelta: 35,
-                    }}
-                    showsUserLocation = {true}
-                    rotateEnabled = {false}
-                    loadingEnabled = {true}
-                >
-                    <MapViewDirections apikey={constants.GAPIKEY}
-                    origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
-                    destination={{latitude: this.state.endLat, longitude: this.state.endLng}}
-                    strokeWidth={3}
-                    tripCriteria={this.state.criteriaArray}
-                    strokeColor='#4a89f3'
-                    lineJoin='round'
-                    />
-
-                    <MapView.Marker
-                        coordinate={{
-                            latitude: this.state.startLat,
-                            longitude: this.state.startLng,
+        if(navigation.getParam('destination', '') !== ''){
+            return (
+                <View style={styles.container}>
+                    <MapView
+                        style={{ flex: 1, zIndex: -1}}
+                        provider="google"
+                        initialRegion={{
+                            latitude: initialLat,
+                            longitude: initialLng,
+                            latitudeDelta: 35,
+                            longitudeDelta: 35,
                         }}
-
-                        title={"Origin"}
-                    />
-
-                    <MapView.Marker
-                        coordinate={{
-                            latitude: this.state.endLat,
-                            longitude: this.state.endLng
-                        }}
-                        title={"Destination"}
-                    />
-                </MapView>
-            </View>
-        );
+                        showsUserLocation = {true}
+                        rotateEnabled = {false}
+                        loadingEnabled = {true}
+                    >
+                        <MapViewDirections apikey={constants.GAPIKEY}
+                        origin= {{latitude: this.state.startLat, longitude: this.state.startLng}}
+                        destination={{latitude: this.state.endLat, longitude: this.state.endLng}}
+                        strokeWidth={3}
+                        tripCriteria={this.state.criteriaArray}
+                        strokeColor='#4a89f3'
+                        lineJoin='round'
+                        />
+    
+                        <MapView.Marker
+                            coordinate={{
+                                latitude: this.state.startLat,
+                                longitude: this.state.startLng,
+                            }}
+    
+                            title={"Origin"}
+                        />
+    
+                        <MapView.Marker
+                            coordinate={{
+                                latitude: this.state.endLat,
+                                longitude: this.state.endLng
+                            }}
+                            title={"Destination"}
+                        />
+                    </MapView>
+                </View>
+            );
+        }else{
+            return null;
+        }
+        
     }
 };
 

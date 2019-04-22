@@ -442,8 +442,8 @@ export default class NewTripScreen extends React.Component {
 
 
                     <Modal isVisible={this.state.isModalVisible}
-                           animationIn='bounceIn'
-                           onBackdropPress={() => this.setFalse()}
+                        animationIn='bounceIn'
+                        onBackdropPress={() => this.setFalse()}
                     >
                         <View style={{
                             flex: 0.5,
