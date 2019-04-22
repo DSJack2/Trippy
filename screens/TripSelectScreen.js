@@ -16,24 +16,14 @@ export default class TripSelectScreen extends React.Component {
         }
     }
 
-    static navigationOptions = {
-        title: 'TripSelect',
-    }
 
     onNextPress = () => {
-        var navActions = StackActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
+        var navActions = StackActions.push({
                     routeName: 'NewTrip',
                     params: { origin: this.state.startAddress, destination: this.state.destinationAddress }
-                })
-            ],
-
-        });
-
+                });
         this.props.navigation.dispatch(navActions);
-    }
+    };
 
     render() {
 
