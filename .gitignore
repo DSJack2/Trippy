@@ -1,5 +1,5 @@
 node_modules/**/*
-!node_modules/react-native-maps-directions
+!node_modules/react-native-maps-directions/*
 .expo/*
 npm-debug.*
 *.jks
