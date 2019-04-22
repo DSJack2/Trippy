@@ -1,4 +1,8 @@
 node_modules/**/*
+<<<<<<< HEAD
+=======
+!node_modules/*/
+>>>>>>> e21237edfbfbbfce84ba407717b890663373ee5d
 !node_modules/react-native-maps-directions
 .expo/*
 npm-debug.*

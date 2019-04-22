@@ -29,17 +29,20 @@ export default class MapScreen extends React.Component {
             endLat: 0,
             endLng: 0,
             criteriaArray: []
-        }
+        };
         this.setMarkers();
-
+        this.convertHours();
     }
 
     setMarkers() {
         const { navigation } = this.props;
         const origin = navigation.getParam('origin', 'Not a Valid Address');
         const destination = navigation.getParam('destination', 'Not a Valid Address');
-        const blah = navigation.getParam('tripCriteria', '');
         this.state.criteriaArray = navigation.getParam('tripCriteria', '');
+        this.state.criteriaArray.map((i) => {
+            var time = new Date(i['tme']);
+            i['time'] = time;
+        });
         Geocoder.init(constants.GAPIKEY);
         Geocoder.from(JSON.stringify(origin))
             .then(json => {
@@ -56,6 +59,10 @@ export default class MapScreen extends React.Component {
 
     }
 
+
+    convertHours = () =>{
+
+    }
 
 
     render() {
