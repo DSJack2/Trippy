@@ -175,7 +175,14 @@ export default class NewTripScreen extends React.Component {
                         alignItems: 'center',
                         backgroundColor: 'white',
                     }}>
-
+                        <Text style={{
+                            color: 'green',
+                            textAlign: 'center',
+                            textAlignVertical: 'center',
+                            fontWeight: 'bold',
+                            fontSize: 25
+                        }}>
+                            {this.state.tripName}{"\n"}</Text>
                         <Text>Origin: {this.state.origin}{"\n"}{"\n"}
                         </Text>
                         <Text>Destination: {this.state.destination} </Text>

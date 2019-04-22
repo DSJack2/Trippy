@@ -40,8 +40,9 @@ export default class MapScreen extends React.Component {
         const destination = navigation.getParam('destination', 'Not a Valid Address');
         this.state.criteriaArray = navigation.getParam('tripCriteria', '');
         this.state.criteriaArray.map((i) => {
-            var time = new Date(i['time']);
+            var time = new Date(i['tme']);
             i['time'] = time;
+            console.log(i);
         });
         Geocoder.init(constants.GAPIKEY);
         Geocoder.from(JSON.stringify(origin))
