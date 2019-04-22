@@ -287,30 +287,12 @@ export default class NewTripScreen extends React.Component {
             criteriaName: this.state.criteriaName,
             id: id.toString(10)
         });
-<<<<<<< HEAD
         this.setState({ tripCriteria: [...this.array] },
             function () {
-                // console.log(this.state.tripCriteria);
+                //    console.log(this.state.tripCriteria);
             });
-        this.setState({ hidden: false });
-        this.setState({ isModalVisible: false });
-        this.setState({ foodVisible: false });
-        this.setState({ gasStationVisible: false });
-        this.setState({ hotelVisible: false });
-        this.setState({ attractionsVisible: false });
-        this.setState({ restStopVisible: false });
-        this.setState({ otherVisible: false });
-        this.setState({ timeVisible: false });
-        this.setState({ submitVisible: false });
-        this.setState({ category: '' });
-=======
-        this.setState({tripCriteria: [...this.array]},
-        function(){
-           console.log(this.state.tripCriteria);
-        } );
         this.setFalse();
-        this.setState({category: ''});
->>>>>>> 88630a19e427a33ef063240509f94947265d8d48
+        this.setState({ category: '' });
     };
 
     _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
@@ -358,7 +340,8 @@ export default class NewTripScreen extends React.Component {
             otherVisible: false,
             timeVisible: false,
             submitVisible: false
-        })};
+        })
+    };
 
     render() {
         let index = 0;
@@ -432,8 +415,8 @@ export default class NewTripScreen extends React.Component {
 
 
                     <Modal isVisible={this.state.isModalVisible}
-                           animationIn='bounceIn'
-                           onBackdropPress={() => this.setFalse()}
+                        animationIn='bounceIn'
+                        onBackdropPress={() => this.setFalse()}
                     >
                         <View style={{
                             flex: 0.5,
