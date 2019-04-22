@@ -53,12 +53,7 @@ export default class NewTripScreen extends React.Component {
         let trips = firebase.database().ref(`Trips/` + this.state.currentUser.uid);
         trips.on('value', (snapshot) => {
             snapshot.forEach((child) => {
-<<<<<<< HEAD
-                //console.log(child);
-                tripArray.push(child);``
-=======
                 tripArray.push(child);
->>>>>>> e21237edfbfbbfce84ba407717b890663373ee5d
             });
             this.setState({data: tripArray.reverse()});
 
@@ -75,15 +70,6 @@ export default class NewTripScreen extends React.Component {
         const name = this.state.tripName;
         const {navigation} = this.props;
         var navActions = StackActions.push({
-<<<<<<< HEAD
-                    routeName: 'NewTrip',
-                    params: {
-                        origin: navigation.getParam('origin', x),
-                        destination: navigation.getParam('destination', y),
-                        //tripInfo: navigation.getParam('tripCriteria', '')
-                        tripInfo: navigation.getParam('tripName','')
-                    }});
-=======
             routeName: 'NewTrip',
             params: {
                 origin: navigation.getParam('origin', x),
@@ -92,7 +78,6 @@ export default class NewTripScreen extends React.Component {
                 tripName: navigation.getParam('tripName', name)
             }
         });
->>>>>>> e21237edfbfbbfce84ba407717b890663373ee5d
         this.props.navigation.dispatch(navActions);
     };
 
