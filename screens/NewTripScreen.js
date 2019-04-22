@@ -41,7 +41,7 @@ export default class NewTripScreen extends React.Component {
             tripCriteria: [],
             category: '', // category of trip param/criteria
             criteriaName: '',//criteria name
-            time: null,
+            time: '',
             isModalVisible: false,
             foodVisible: false,
             gasStationVisible: false,
@@ -54,13 +54,15 @@ export default class NewTripScreen extends React.Component {
             timeVisible: false,
             activityRowKey: null,
         };
+      // this.initializeTripCriteria();
     }
 
     writeNewTrip = () => {
         const {navigation} = this.props;
         let fbOrigin = navigation.getParam('origin', '');
         let fbDestination = navigation.getParam('destination', '');
-
+        //console.log(typeof this.state.tripCriteria[0]['time']);
+        this.setState({tripCriteria: this.state.tripCriteria});
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 firebase.database().ref('Trips/' + user.uid + '/').push({
@@ -69,7 +71,8 @@ export default class NewTripScreen extends React.Component {
                     dailyDriveTime: this.state.dailyDriveTime,
                     tripName: this.state.tripName,
                     numberOfDrivers: this.state.numberOfDrivers,
-                    scenic: false
+                    scenic: false,
+                    tripCriteria: this.array
                 }).then((data) => {
                     // console.log('data:', data);
                 }).catch((error) => {
@@ -115,6 +118,7 @@ export default class NewTripScreen extends React.Component {
 
 
     componentDidMount() {
+        this.initializeTripCriteria();
         this.setState({tripCriteria: [...this.array]})
     };
 
@@ -224,7 +228,7 @@ export default class NewTripScreen extends React.Component {
                                 {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                                 {
                                     text: 'Yes', onPress: () => {
-                                        this.deleteItemById(id)
+                                        this.deleteItemById(item.id)
                                     }
                                 }], {cancelable: true}
                         );
@@ -235,6 +239,7 @@ export default class NewTripScreen extends React.Component {
             rowId: index,
             sectionId: 1
         };
+        const time = new Date(item.tme);
         return (
             <Swipeout {...swipeSettings} >
                 <View style={{
@@ -254,7 +259,7 @@ export default class NewTripScreen extends React.Component {
                             <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
                                 {item.category}: {item.criteriaName}</Text>
                             <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
-                                {item.time.toLocaleTimeString()}</Text>
+                                {time.toLocaleTimeString()}</Text>
                         </View>
                     </View>
                     <View style={{
@@ -271,16 +276,22 @@ export default class NewTripScreen extends React.Component {
         const filteredData = this.state.tripCriteria.filter(item => item.id != id);
         this.array = filteredData;
         this.setState({tripCriteria: filteredData});
-        console.log(this.state.tripCriteria)
     };
 
     _addTripInfo = () => {
         id++;
         this.array.push({
             category: this.state.category,
-            time: this.state.time,
             criteriaName: this.state.criteriaName,
-            id: id.toString(10)
+            id: id.toString(10),
+            tme: this.state.time.toString(),
+        });
+        console.log(this.array);
+        this.array.sort(function (a,b){
+            console.log(a['tme']);
+            var temp1 = new Date(a['tme']);
+            var temp2 = new Date(b['tme']);
+            return temp1 - temp2;
         });
         this.setFalse();
         this.setState({
@@ -295,17 +306,16 @@ export default class NewTripScreen extends React.Component {
     _hideDateTimePicker = () => {
         this.setState({isDateTimePickerVisible: false});
         this.setState({submitVisible: true});
-    }
-    ;
+    };
 
     _handleDatePicked = (date) => {
-        this.setState({time: date});
+
+        this.setState({time: date.toString()});
         this._hideDateTimePicker();
     };
 
     //converts time to hrs:minutes time period format
     formatTime = (date) => {
-        console.log(date);
         var hrs = date.getHours();
         var timePeriod = "AM";
         if (hrs >= 12) {
@@ -337,6 +347,31 @@ export default class NewTripScreen extends React.Component {
             submitVisible: false
         })
     };
+
+    initializeTripCriteria = () => {
+
+        var arr= [];
+        const {navigation} = this.props;
+        this.setState({tripName: navigation.getParam('tripName','')});
+        const z = (navigation.getParam('tripCriteria', ''));
+        console.log(z);
+        if (z){
+            Object.keys(z).map(function (id) {
+                var criteriaN = '';
+                if(z[id]['criteriaName']) {
+                    criteriaN = z[id]['criteriaName'];
+                }
+                arr.push({
+                    category: z[id]['category'],
+                    tme: z[id]['tme'],
+                    criteriaName: criteriaN,
+                    id: id.toString(10)
+                });
+                id++;
+            });
+        }
+        this.array = arr;
+    }
 
     render() {
         let index = 0;

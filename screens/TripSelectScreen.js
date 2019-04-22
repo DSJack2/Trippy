@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { TextInput } from 'react-native-gesture-handler';
-import { ImageBackground, StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View,Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -18,11 +18,15 @@ export default class TripSelectScreen extends React.Component {
 
 
     onNextPress = () => {
-        var navActions = StackActions.push({
-                    routeName: 'NewTrip',
-                    params: { origin: this.state.startAddress, destination: this.state.destinationAddress }
-                });
-        this.props.navigation.dispatch(navActions);
+        if(this.state.startAddress && this.state.destinationAddress) {
+            var navActions = StackActions.push({
+                routeName: 'NewTrip',
+                params: {origin: this.state.startAddress, destination: this.state.destinationAddress}
+            });
+            this.props.navigation.dispatch(navActions);
+        }else{
+            Alert.alert("Enter both a Start Address and a Destination Address");
+        }
     };
 
     render() {
@@ -46,6 +50,7 @@ export default class TripSelectScreen extends React.Component {
                         getDefaultValue={() => ''}
 
                         query={{
+                            components: 'country:us',
                             key: GAPIKEY,//need to load key
                             language: 'en', // language of the results
                             types: ['address', 'establishment']
@@ -76,6 +81,7 @@ export default class TripSelectScreen extends React.Component {
                     />
 
                     <GooglePlacesAutocomplete
+
                         placeholder='Destination Address'
                         minLength={2}
                         autoFocus={false}
@@ -92,6 +98,7 @@ export default class TripSelectScreen extends React.Component {
                         getDefaultValue={() => ''}
 
                         query={{
+                            components: 'country:us',
                             key: GAPIKEY,//need to load in key
                             language: 'en', // language of the results
                             types: ['address', 'establishment']
@@ -120,7 +127,7 @@ export default class TripSelectScreen extends React.Component {
                         debounce={200}
                     />
                     <Button style={styles.startTripButton} buttonStyle={styles.button} title="Next"
-                        onPress={() => this.props.navigation.navigate('NewTrip', { origin: this.state.startAddress, destination: this.state.destinationAddress })} />
+                        onPress={() => this.onNextPress() } />
 
                 </ImageBackground>
             </View>

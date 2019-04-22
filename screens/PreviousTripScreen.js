@@ -1,10 +1,21 @@
 import React from 'react';
-import {StyleSheet, View, ScrollView, Text, TextInput,ImageBackground, FlatList,TouchableOpacity,Dimensions} from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
+import {
+    StyleSheet,
+    View,
+    ScrollView,
+    Text,
+    TextInput,
+    ImageBackground,
+    FlatList,
+    TouchableOpacity,
+    Dimensions
+} from 'react-native';
+import {StackActions, NavigationActions} from 'react-navigation';
 import Modal from "react-native-modal";
 import * as firebase from 'firebase';
-import { Button, colors } from 'react-native-elements';
-const{WIDTH,HEIGHT}  =  Dimensions.get('window');
+import {Button, colors} from 'react-native-elements';
+
+const {WIDTH, HEIGHT} = Dimensions.get('window');
 console.disableYellowBox = true;
 
 export default class NewTripScreen extends React.Component {
@@ -22,11 +33,12 @@ export default class NewTripScreen extends React.Component {
             scenic: false,
             previousTripsVisible: true,
             isModalVisible: false,
+            tripCriteria: []
         };
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getUserTrips();
         // this.setState({origin: this.state.origin});
         // this.setState({destination: this.state.destination});
@@ -41,31 +53,34 @@ export default class NewTripScreen extends React.Component {
         let trips = firebase.database().ref(`Trips/` + this.state.currentUser.uid);
         trips.on('value', (snapshot) => {
             snapshot.forEach((child) => {
-                //console.log(child);
-                tripArray.push(child);``
+                tripArray.push(child);
             });
             this.setState({data: tripArray.reverse()});
 
         });
         this.setState({previousTripVisible: false});
-        //console.log(typeof this.state.data)
+
     };
 
     navigateToNewTrip = () => {
         this.setState({isModalVisible: false});
         const x = this.state.origin;
         const y = this.state.destination;
+        const z = this.state.tripCriteria;
+        const name = this.state.tripName;
         const {navigation} = this.props;
         var navActions = StackActions.push({
-                    routeName: 'NewTrip',
-                    params: {
-                        origin: navigation.getParam('origin', x),
-                        destination: navigation.getParam('destination', y),
-                        //tripInfo: navigation.getParam('tripCriteria', '')
-                        tripInfo: navigation.getParam('tripName','')
-                    }});
+            routeName: 'NewTrip',
+            params: {
+                origin: navigation.getParam('origin', x),
+                destination: navigation.getParam('destination', y),
+                tripCriteria: navigation.getParam('tripCriteria', z),
+                tripName: navigation.getParam('tripName', name)
+            }
+        });
         this.props.navigation.dispatch(navActions);
     };
+
 
     renderSeparator = () => {
         return (
@@ -86,13 +101,14 @@ export default class NewTripScreen extends React.Component {
     };
 
 
-
     _renderListItem(item) {
         var x = JSON.stringify(item);
         var y = JSON.parse(x);
         var start = y['origin'];
         var end = y['desination'];
         var name = y['tripName'];
+        var tripInfo = y['tripCriteria'];
+
         return (
             <TouchableOpacity
                 style={{
@@ -104,14 +120,20 @@ export default class NewTripScreen extends React.Component {
                     height: 85
                 }}
                 onPress={() => {
-                    this.setState({origin: start, destination: end, tripName: name});
-                     this._toggleModal();
+                    console.log(tripInfo);
+                    this.setState({origin: start, destination: end, tripName: name, tripCriteria: tripInfo});
+                    this._toggleModal();
                 }}>
-                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center', fontWeight:'bold'}}> {this.state.tripName} </Text>
+                <Text style={{
+                    color: 'green',
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    fontWeight: 'bold',
+                }}> {name} </Text>
                 <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
                     {start}</Text>
-                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center',fontWeight:'bold'}}>
-                    TO</Text>
+                <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center', fontWeight: 'bold'}}>
+                    To</Text>
                 <Text style={{color: 'black', textAlign: 'center', textAlignVertical: 'center'}}>
                     {end} </Text>
             </TouchableOpacity>);
@@ -124,9 +146,16 @@ export default class NewTripScreen extends React.Component {
 
     render() {
         return (
-            <ImageBackground source={require('../assets/images/road-mountains.jpg')} style={styles.ImageBackgroundContainer}>
+            <ImageBackground source={require('../assets/images/road-mountains.jpg')}
+                             style={styles.ImageBackgroundContainer}>
                 {/*<Button title="Click to get Previous Trips" onPress={this.getUserTrips}/>*/}
-                <Text style={{color: 'red', textAlign: 'center', textAlignVertical: 'center',fontWeight:'bold',fontSize: 25}}>
+                <Text style={{
+                    color: 'red',
+                    textAlign: 'center',
+                    textAlignVertical: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 25
+                }}>
                     PREVIOUS TRIPS{"\n"}</Text>
                 <FlatList
                     data={this.state.data}
